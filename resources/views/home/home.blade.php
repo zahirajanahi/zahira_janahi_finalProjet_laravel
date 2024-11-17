@@ -63,6 +63,147 @@
         </div>
     </div>
 
+     <div class="flex justify-center gap-32">
+        <div class="pt-5">
+            <h1 class="text-3xl pb-5">Track Progress Efficiently <br> With Our Task <br> Management System </h1>
+            <p class="text-gray-400 w-[40vw] text-lg">Our task management. With intuitive features and user-friendly interface, you can easily manage tasks, assign responsibilities, and monitor projet milestones.</p>
+            <div class="ps-10 text-lg flex flex-col gap-2 pt-5 pb-10">
+                <p> <i class="bi bi-check2-circle"></i> Steamline task assignment and collaboration</p>
+                <p> <i class="bi bi-check2-circle"></i> Monitor Projet milestones and deadlines</p>
+                <p>  <i class="bi bi-check2-circle"></i> Track Team Performance and Productivity</p>
+            </div>
+            <button class="bg-[#202023] rounded-xl text-white px-3 py-3">Learn More</button>
+        </div>
 
+        <div> 
+            <img src="{{ asset('storage/images/flymen.png') }}" class="w-[30vw] " alt="logo">
+
+        </div>
+
+     </div>
+
+     <div class="flex justify-center gap-32">
+        <div> 
+            <img src="{{ asset('storage/images/flywmn.png') }}" class="w-[25vw] h-[75vh]" alt="logo">
+        </div>
+
+        <div class="pt-5">
+            <h1 class="text-3xl pb-5"> Efficiently Measure And <br> Track Team Performance<br>With Advanced Analytics</h1>
+            <p class="text-gray-400 w-[40vw] text-lg">Our teamwork management websites provides powerful analytics and reporting tools to help you measure and optimize your Team's performance. Gain Valuable insights and make Data-driven decisions to drive success.</p>
+             
+            <div class="flex flex-col gap-4 ps-10 pt-8">
+                <div class="border border-gray-300 rounded-lg w-[20vw] p-2 flex items-center gap-3 hover:bg-gray-100">           
+                 <img src="{{ asset('storage/images/blue.png') }}" class="w-10 h-10 " alt="logo">
+                  Performance Tracking <i class="bi bi-arrow-right ps-10"></i>
+                 </div>
+                <div class="border border-gray-300 rounded-lg w-[20vw] p-2 flex items-center gap-3 hover:bg-gray-100">
+                    <img src="{{ asset('storage/images/yellow.png') }}" class="w-10 h-10 " alt="logo">
+                     Data Visualization <i class="bi bi-arrow-right ps-16"></i></div>
+                </div>
+        </div>
+
+      
+
+     </div>
+
+     <div>
+        <h1 class="text-center text-5xl pt-10">Efficiently Manage Your Team With </h1> 
+         <h1 class="pt-2 text-center text-5xl pb-14">Our Comprehensive Features </h1>
+        
+
+         <div class="flex justify-center gap-5 pb-10">
+            <div class="bg-[#daf4b6] w-[35vw] h-[37vh] rounded-xl flex"> 
+                <div class="ps-5 pt-10">
+                    <h1 class="text-2xl ">Seamless File <br> Sharing</h1>
+                    <p class="text-gray-600 w-[20vw] pt-2 pb-7">Easily share Files with your team, ensuring everyone has access to the latest documents and resources</p>
+                    <a href="#" class="text-black ">Learn More <i class="bi bi-arrow-right ms-5 text-white bg-black rounded-full px-2 py-2 "></i></a>
+                </div>
+                <div>
+                    <img src="{{ asset('storage/images/green.png') }}" class="pt-7" alt="logo">
+                </div>
+            </div>
+            <div class="border border-gray-400 rounded-xl w-[20vw] h-[37vh] hover:bg-gray-100">
+            <h1 class="text-2xl pt-10 ps-5 font-medium">Ingegrated <br> Calendar</h1>
+            <div class="pt-24 ps-5">
+                <a href="#" class="text-black">Learn More <i class="bi bi-arrow-right ms-5 text-white bg-black rounded-full px-2 py-2 "></i></a>
+            </div>
+
+            </div>
+            <div class="border border-gray-400 rounded-xl w-[20vw] h-[37vh] hover:bg-gray-100">
+                <h1 class="text-2xl pt-10 ps-5 font-medium">Efficient <br> Communication</h1>
+                <div class="pt-24 ps-5">
+                    <a href="#" class="text-black">Learn More <i class="bi bi-arrow-right ms-5 text-white bg-black rounded-full px-2 py-2 "></i></a>
+                </div>
     
+            </div>
+         </div>
+     </div>
+      
+      
+     <div class="bg-[#d5e0ff] h-[91vh] mb-10">
+          <h1 class="pt-16 ps-16 pb-16 text-5xl ">Ready To Get Boost <br> Productivity WIth Planify?</h1>
+           <a href="#" class="bg-white rounded-full py-4 ps-5 ms-16 ">
+            Contact Us 
+            <i class="bi bi-arrow-right text-black bg-[#feda97] px-3 py-2 rounded-full ms-20 me-3"></i>
+           </a>
+
+           <div class="flex  justify-between ">
+            <div class="w-[40vw] pt-40 ps-16">
+                <h1 class="font-medium text-lg pb-3">Powerful TeamWork Management Platform.</h1>
+                <p class="text-gray-600">Streamline Collaboration, Boost Productivity, And Achieve Your Business Goals With Our Innovative Teamwork managemnt website.</p>
+            </div>
+            <div >
+            <img src="{{ asset('storage/images/bluemen.png') }}" class="w-[41vw] " alt="logo">
+            </div>
+           </div>
+     </div>
+       
+     <div class="flex justify-evenly pb-10 items-center">
+            <div class="flex items-center text-xl">
+                <img src="{{ asset('storage/images/logo.png') }}" class="w-20 h-20 " alt="logo">
+                lanify
+            </div>
+            <div class="text-xl">Hello@Task.com</div>
+     </div>
+
+  <footer class="bg-white py-12 mx-20 border-t pb-10">
+    <div class="container mx-auto px-4">
+   
+
+      <div class="flex flex-wrap justify-center text-center lg:text-left lg:justify-between">
+        <div class="w-full lg:w-1/3 mb-6 lg:mb-0">
+          <h2 class="font-bold text-lg text-gray-800">Planify</h2>
+          <p class="text-gray-500 mt-4">
+            Planify is a web-based platform designed to facilitate effective teamwork and collaboration among team members.
+          </p>
+          <button class="mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg">Client Portal</button>
+        </div>
+        <div class="w-full lg:w-1/3 mb-6 ps-20 lg:mb-0">
+          <h3 class="font-medium text-gray-800">Navigation</h3>
+          <ul class="mt-4 space-y-2 text-gray-500">
+            <li>Products</li>
+            <li>Services</li>
+            <li>Contact</li>
+          </ul>
+        </div>
+        <div class="w-full lg:w-1/3">
+          <h3 class="font-medium text-gray-800">Follow Us</h3>
+          <ul class="mt-4 space-y-2 text-gray-500">
+            <li>LinkedIn</li>
+            <li>X</li>
+            <li>Instagram</li>
+            <li>Facebook</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <div class="fixed bottom-4 right-4">
+    <button class="bg-[#feda97] text-gray-800 px-4 py-3 rounded-full shadow-lg">
+        <i class="bi bi-arrow-up-short"></i>
+    </button>
+  </div>
+
 </x-app-layout>
