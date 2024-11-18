@@ -7,40 +7,59 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    // Display tasks for the authenticated user
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $tasks = auth()->user()->tasks; 
-        return view('tasks.index', compact('tasks'));
+        return view('task.index');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'deadline' => 'required|date|after:today',
-            'priority' => 'required|in:low,medium,high',
-        ]);
-
-        auth()->user()->tasks()->create($request->all());
-
-        return redirect()->back()->with('success', 'Task created successfully!');
+        //
     }
 
-    // Mark a task as completed
-    public function markAsCompleted(Task $task)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Task $task)
     {
-        $this->authorize('update', $task); // Ensure user owns the task
-        $task->update(['is_done' => true]);
-
-        return redirect()->back()->with('success', 'Task marked as completed!');
+        //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Task $task)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Task $task)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task); // Ensure user owns the task
-        $task->delete();
-
-        return redirect()->back()->with('success', 'Task deleted successfully!');
+        //
     }
 }
