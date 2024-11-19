@@ -125,38 +125,180 @@
 <!-- Sidebar -->
 <div
     id="sidebar"
-    class="fixed top-0 left-0 h-full w-64 bg-[#f5f5f5] text-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300"
+    class="fixed top-0 left-0 h-full w-20 bg-gray-100 shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
 >
-    <div class="p-4 ">
-        <div class="flex gap-3 pb-2">
-            <button
-            class="  text-xl"
-            id="toggleSidebarButton"
-            onclick="toggleSidebar()"
-        >
-            <i class="bi bi-list"></i> 
-           </button>
-    
-           
-           <div class="flex items-center ps-2">
-            <img src="{{ asset('storage/images/logo.png') }}" class="w-[3vw]" alt="logo"><span><a href="{{ route('dashboard') }}">lanify</a></span>
-          </div>
-        </div>
-     
+    <!-- Logo -->
+    <div class="flex flex-col items-center">
+        <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+    </div>
+
+    <!-- Sidebar Menu -->
+    <ul class="flex flex-col items-center space-y-6">
+        <li>
+            <a
+                href="{{ route('dashboard') }}"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-house text-2xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+        </li>
+        <li>
+            <a
+                href="{{ route('task.index') }}"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-list-check text-2xl"></i>
+                <span class="text-xs mt-1">Tasks</span>
+            </a>
+        </li>
+        <li>
+            <a
+                href="#"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-people text-2xl"></i>
+                <span class="text-xs mt-1">Team</span>
+            </a>
+        </li>
         
-        <ul class="mt-4 border-b border-t">
-            <li class="mb-2 mt-2">
-                <a href="#" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg  hover:text-black duration-300 transition"> <i class="bi bi-house"></i> Home</a>
-            </li>
-            <li class="mb-2">
-                <a href="{{ route('task.index') }}" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg hover:text-black duration-300 transition"> <i class="bi bi-list-check"></i> Create Tasks</a>
-            </li>
-            <li class="mb-2">
-                <a href="#" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg hover:text-black duration-300 transition"><i class="bi bi-people"></i> Create Team</a>
-            </li>
-        </ul>
+        <li>
+            <a
+            href="#"
+            class="flex flex-col items-center text-gray-500 hover:text-black transition mt-80"
+        >
+        <i class="bi bi-box-arrow-right text-2xl"></i>
+            <span class="text-xs mt-1">Log out</span>
+        </a>
+        </li>
+    </ul>
+</div>
+
+
+{{-- main --}}
+  <div class="">
+    <button onclick="document.getElementById('createTaskModal').classList.remove('hidden');" class="ms-96 mt-20 text-white bg-black px-5  py-3 rounded-full">Create Task</button>
+  </div>
+
+  <div id="createTaskModal" class="fixed inset-0 bg-[#101010] bg-opacity-80 flex items-center justify-center z-50 hidden transition-opacity duration-300">
+    <!-- Modal content -->
+    <div class="bg-[#1c1c1c] border-[1px] border-[#444] rounded-2xl shadow-md shadow-black/50 w-full max-w-md p-6">
+
+        <!-- Modal header -->
+        <div class="flex justify-between items-center pb-4">
+            <h2 class="text-lg font-medium text-gray-200">Create a Task</h2>
+            <button
+                class="text-[#ffd997] hover:text-[#fff] text-[25px] focus:outline-none cursor-pointer transition duration-300"
+                onclick="document.getElementById('createTaskModal').classList.add('hidden');"
+            >
+                &times;
+            </button>
+        </div>
+
+        <!-- Modal form -->
+        <form action="{{ route('tasks.store') }}" method="POST" class="mt-4">
+            @csrf
+
+            <!-- Task name -->
+            <div class="mb-4">
+                <label for="name" class="block text-gray-300 text-sm font-medium mb-1">Task Name</label>
+                <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    required
+                />
+            </div>
+
+            <!-- Task description -->
+            <div class="mb-4">
+                <label for="description" class="block text-gray-300 text-sm font-medium mb-1">Task Description</label>
+                <textarea
+                    name="description"
+                    id="description"
+                    rows="2"
+                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                ></textarea>
+            </div>
+
+            <!-- Task deadline -->
+            <div class="mb-4">
+                <label for="deadline" class="block text-gray-300 text-sm font-medium mb-1">Task Deadline</label>
+                <input
+                    id="deadline"
+                    type="date"
+                    name="deadline"
+                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    required
+                />
+            </div>
+
+
+            {{-- Task Priority --}}
+            <div class="mb-4">
+                <x-input-label for="priority" :value="__('Task priority')" class="text-white pb-2 text-sm"/>
+                <select 
+                    id="priority" 
+                    name="priority" 
+                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    required
+                >
+                    <option value="low" class="text-[#000]">Low</option>
+                    <option value="medium" class="text-[#000]">Medium</option>
+                    <option value="high" class="text-[#000]">High</option>
+                </select>
+            </div>
+
+            <!-- Submit and cancel buttons -->
+            <div class="flex justify-end gap-3">
+                <button
+                    type="button"
+                    class="px-4 py-2 text-sm font-medium text-gray-300 bg-transparent border border-[#444] rounded-md hover:bg-[#444] transition duration-300"
+                    onclick="document.getElementById('createTaskModal').classList.add('hidden');"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    class="px-4 py-2 text-sm font-medium text-white bg-[#ffd997] border border-[#ffd997] rounded-md  transition duration-300"
+                >
+                    Create
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
     function toggleDropdown() {

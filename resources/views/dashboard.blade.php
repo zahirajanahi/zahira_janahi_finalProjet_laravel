@@ -32,7 +32,7 @@
 
         <div class="relative ps-20 flex items-center gap-4">
             <button
-                class="bg-[#dddddda8] text-gray-500 px-3 py-2 rounded-full flex items-center gap-2"
+                class="bg-gray-100 text-gray-500 px-3 py-2 rounded-full flex items-center gap-2"
                 id="createButton"
                 onclick="toggleCreateDropdown()"
             >
@@ -68,7 +68,7 @@
         <input
             type="text"
             placeholder="Search"
-            class="w-[40vw] px-4 py-2 rounded-full bg-[#dddddda8] text-white border border-gray-200"
+            class="w-[40vw] px-4 py-2 rounded-full bg-gray-100 border-none text-black focus:border-gray-100 focus:outline-none focus:ring-0"
         />
 
         <!-- User Dropdown -->
@@ -125,38 +125,101 @@
 <!-- Sidebar -->
 <div
     id="sidebar"
-    class="fixed top-0 left-0 h-full w-64 bg-[#f5f5f5] text-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300"
+    class="fixed top-0 left-0 h-full w-20 bg-gray-100 shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
 >
-    <div class="p-4 ">
-        <div class="flex gap-3 pb-2">
-            <button
-            class="  text-xl"
-            id="toggleSidebarButton"
-            onclick="toggleSidebar()"
-        >
-            <i class="bi bi-list"></i> 
-           </button>
-    
-           
-           <div class="flex items-center ps-2">
-            <img src="{{ asset('storage/images/logo.png') }}" class="w-[3vw]" alt="logo"><span><a href="{{ route('dashboard') }}">lanify</a></span>
-          </div>
-        </div>
-     
-        
-        <ul class="mt-4 border-b border-t">
-            <li class="mb-2 mt-2">
-                <a href="#" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg  hover:text-black duration-300 transition"> <i class="bi bi-house"></i> Home</a>
-            </li>
-            <li class="mb-2">
-                <a href="{{ route('task.index') }}" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg hover:text-black duration-300 transition"> <i class="bi bi-list-check"></i> Create Tasks</a>
-            </li>
-            <li class="mb-2">
-                <a href="#" class="block px-4 py-2 hover:bg-[#dddd] rounded-lg hover:text-black duration-300 transition"><i class="bi bi-people"></i> Create Team</a>
-            </li>
-        </ul>
+    <!-- Logo -->
+    <div class="flex flex-col items-center">
+        <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
     </div>
+
+    <!-- Sidebar Menu -->
+    <ul class="flex flex-col items-center space-y-6">
+        <li>
+            <a
+                href="{{ route('dashboard') }}"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-house text-2xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+        </li>
+        <li>
+            <a
+                href="{{ route('task.index') }}"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-list-check text-2xl"></i>
+                <span class="text-xs mt-1">Tasks</span>
+            </a>
+        </li>
+        <li>
+            <a
+                href="#"
+                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+            >
+                <i class="bi bi-people text-2xl"></i>
+                <span class="text-xs mt-1">Team</span>
+            </a>
+        </li>
+
+        <li>
+            <a
+            href="#"
+            class="flex flex-col items-center text-gray-500 hover:text-black transition mt-80"
+        >
+        <i class="bi bi-box-arrow-right text-2xl"></i>
+            <span class="text-xs mt-1">Log out</span>
+        </a>
+        </li>
+    </ul>
 </div>
+
+
+
+
+
+
+<div class="relative overflow-hidden mx-auto w-[80vw] mt-7 ms-40 shadow-lg rounded-3xl">
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="w-full h-[60vh] rounded-3xl object-cover"
+    >
+      <source src="https://cdn.dribbble.com/userupload/17508582/file/original-7a18b76ade478383dbe5f7ac4b2d6c9d.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
     function toggleDropdown() {

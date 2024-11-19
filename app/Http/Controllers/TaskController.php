@@ -29,6 +29,34 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'deadline' => 'required|date',
+            'priority' => 'required|in:low,medium,high',
+            'team_id' => 'nullable|exists:teams,id',
+            'assigned_to' => 'nullable|exists:users,id',
+        ]);
+
+
+
+
+        Task::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'deadline' => $request->deadline,
+            'priority' => $request->priority,
+            'user_id' => auth()->id(),
+            'team_id' => $request->team_id,
+            'assigned_to' => $request->assigned_to,
+        ]);
+
+
+        dd($request);
+
+
+        // return redirect()->route('tasks.index', $task)
+        //     ->with('success', 'Task created successfully.');
     }
 
     /**
