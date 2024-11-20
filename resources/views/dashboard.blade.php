@@ -12,6 +12,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -36,7 +37,7 @@
                 id="createButton"
                 onclick="toggleCreateDropdown()"
             >
-                <span class="text-sm border-[1px] rounded-full w-[1.5vw] h-[3vh] bg-black text-white">+</span>
+                <span class="text-sm border-[1px] rounded-full w-[1.5vw] h-[3vh] bg-[#932a09] text-white">+</span>
                 Create
             </button>
             <div
@@ -74,7 +75,7 @@
         <!-- User Dropdown -->
         <div class="relative pe-20">
             <button
-                class="flex items-center text-sm font-medium text-gray-500 focus:outline-none"
+                class="flex items-center text-sm font-medium text-[#270906] focus:outline-none"
                 id="dropdownButton"
                 onclick="toggleDropdown()"
             >
@@ -120,12 +121,12 @@
         </div>
     </div>
 </nav>
-
-    
 <!-- Sidebar -->
-<div
+
+ <section>
+    <div
     id="sidebar"
-    class="fixed top-0 left-0 h-full w-20 bg-gray-100 shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
+    class="fixed top-0 left-0 h-full w-20 bg-white  shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
 >
     <!-- Logo -->
     <div class="flex flex-col items-center">
@@ -133,114 +134,187 @@
     </div>
 
     <!-- Sidebar Menu -->
-    <ul class="flex flex-col items-center space-y-6">
+    <ul class="flex flex-col items-center pt-28 space-y-6">
         <li>
             <a
                 href="{{ route('dashboard') }}"
-                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
             >
-                <i class="bi bi-house text-2xl"></i>
-                <span class="text-xs mt-1">Home</span>
+            <i class="bi bi-house-door-fill text-xl"></i>           
             </a>
         </li>
         <li>
             <a
                 href="{{ route('task.index') }}"
-                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
             >
-                <i class="bi bi-list-check text-2xl"></i>
-                <span class="text-xs mt-1">Tasks</span>
+                <i class="bi bi-list-check text-xl"></i>
+              
             </a>
         </li>
         <li>
             <a
                 href="#"
-                class="flex flex-col items-center text-gray-500 hover:text-black transition"
+                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
             >
-                <i class="bi bi-people text-2xl"></i>
-                <span class="text-xs mt-1">Team</span>
+            <i class="bi bi-people-fill text-xl"></i>              
             </a>
         </li>
 
         <li>
             <a
             href="#"
-            class="flex flex-col items-center text-gray-500 hover:text-black transition mt-80"
+            class="flex flex-col items-center text-[#0e332d] transition mt-60 "
         >
         <i class="bi bi-box-arrow-right text-2xl"></i>
-            <span class="text-xs mt-1">Log out</span>
+        
         </a>
         </li>
     </ul>
+
 </div>
+ </section>   
 
 
 
 
-
-
-<div class="relative overflow-hidden mx-auto w-[80vw] mt-7 ms-40 shadow-lg rounded-3xl">
+ {{-- main --}}
+<div class="relative overflow-hidden mx-auto w-[75vw] mt-7 ms-48 shadow-lg rounded-3xl">
     <video
       autoplay
       loop
       muted
       playsinline
-      class="w-full h-[60vh] rounded-3xl object-cover"
+      class="w-full h-[50vh] rounded-3xl object-cover"
     >
       <source src="https://cdn.dribbble.com/userupload/17508582/file/original-7a18b76ade478383dbe5f7ac4b2d6c9d.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-
   </div>
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  {{-- calendar --}}
+   
+  <section>
+      <h1 class=" font-bold font-serif pt-10 ms-52 text-xl text-black me-48 ">Calendar</h1>
+  </section>
+    
+  <div class="py-12 ms-20">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-[75vw] h-[90vh] bg-white rounded-3xl border p-12 shadow-xl" id="calendar"></div>
+    </div>
+</div>
 
 <script>
-    function toggleDropdown() {
-        const dropdown = document.getElementById("dropdownContent");
-        dropdown.classList.toggle("hidden");
+    
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch("/calendar/create");
+        const data = await response.json();
+        const events = data.events;
+        
+        var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+            headerToolbar: {
+                left: 'timeGridWeek',
+                center: 'title',
+                // right: 'listMonth,listWeek,listDay'
+            },
+            initialView: 'timeGridWeek',
+            slotMinTime: "09:00:00",
+            slotMaxTime: "19:00:00",
+            nowIndicator: true,
+            selectable: true,
+            selectMirror: true,
+            selectOverlap: false,
+            weekends: true,
+            editable: true,
+            events: events,
+
+            eventContent: function(arg) {
+                let event = arg.event;
+                let priority = event.extendedProps.priority || '';
+                let status = event.extendedProps.status || '';
+                
+                return {
+                    html: `
+                        <div class="fc-content p-1">
+                            <div class="font-bold">${event.title}</div>
+                            <div class="text-xs">
+                                <span class="capitalize">${priority} Priority</span>
+                                ${status ? `• ${status}` : ''}
+                            </div>
+                        </div>
+                    `
+                };
+            },
+
+            eventClick: function(info) {
+                if (validateOwner(info)) {
+                    if (confirm('Would you like to mark this task as completed?')) {
+                        let taskId = info.event.id;
+                        fetch(`/calendar/delete/${taskId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+                }
+            },
+
+            eventDrop: function(info) {
+                if (validateOwner(info)) {
+                    let taskId = info.event.id;
+                    fetch(`/calendar/update/${taskId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            start: info.event.start.toISOString()
+                        })
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    info.revert();
+                }
+            }
+        });
+
+        calendar.render();
+    } catch (error) {
+        console.error('Error loading calendar events:', error);
     }
 
-    function toggleCreateDropdown() {
-        const dropdown = document.getElementById("createDropdown");
-        dropdown.classList.toggle("hidden");
+    function validateOwner(info) {
+        let owner = info.event.extendedProps.owner;
+        let assignedTo = info.event.extendedProps.assigned_to;
+        let authUser = {{ Auth::id() }};
+        return owner == authUser || assignedTo == authUser;
     }
+});
 
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownContent");
+    dropdown.classList.toggle("hidden");
+}
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        if (sidebar.classList.contains("-translate-x-full")) {
-            sidebar.classList.remove("-translate-x-full");
-        } else {
-            sidebar.classList.add("-translate-x-full");
-        }
+function toggleCreateDropdown() {
+    const dropdown = document.getElementById("createDropdown");
+    dropdown.classList.toggle("hidden");
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("-translate-x-full")) {
+        sidebar.classList.remove("-translate-x-full");
+    } else {
+        sidebar.classList.add("-translate-x-full");
     }
+}
 </script>
 </body>
 </html>

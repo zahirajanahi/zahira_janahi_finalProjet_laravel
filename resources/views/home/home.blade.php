@@ -1,5 +1,6 @@
 <x-app-layout>
-    <div class="flex justify-center pt-10 gap-36 flex-wrap lg:flex-nowrap">
+    <div class="flex justify-center pt-10 gap-36 flex-wrap lg:flex-nowrap" id="hero">
+        
         <div class="pt-10 w-full lg:w-auto">
             <p class="bg-[#d5e1ff] text-center rounded-full py-2 px-4 w-[45vw] sm:w-[50%] md:w-[40%]">Welcome To Planify</p>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl pt-5 text-[#202023]">Boost Productivity</h1>
@@ -201,9 +202,12 @@
 
 
   <div class="fixed bottom-4 right-4">
-    <button class="bg-[#feda97] text-gray-800 px-4 py-3 rounded-full shadow-lg">
-        <i class="bi bi-arrow-up-short"></i>
-    </button>
+    <a href="#hero">
+        <button class="bg-[#feda97] text-gray-800 px-4 py-3 rounded-full shadow-lg">
+            <i class="bi bi-arrow-up-short"></i>
+        </button>
+    </a>
+
   </div>
 
 </x-app-layout>
