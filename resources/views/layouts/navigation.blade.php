@@ -10,15 +10,8 @@
             @endguest
         </div>
 
-        <!-- Center Section: Logo -->
-        <div class="text-black font-bold text-xl">
-            @guest
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                <img src="{{ asset('storage/images/logo.png') }}" class="w-[3vw]" alt="logo"><span>lanify</span>
-            </a>
-            @endguest
-            
-        </div>
+      
+    
 
    <!-- Right Section: Auth Links -->
 <div class="flex items-center gap-4 hidden md:flex">
@@ -52,7 +45,7 @@
     @else
         <!-- Show login and signup for guests -->
         <a href="{{ route('login') }}" class="text-black hover:text-gray-800">Log In</a>
-        <a href="{{ route('register') }}" class="text-white bg-black rounded-full px-4 py-2 hover:bg-gray-800 me-5">
+        <a href="{{ route('register') }}" class="text-white bg-[#70220e] rounded-full px-4 py-2 hover:bg-[#843420] transition duration-500 me-5">
             Sign Up
         </a>
     @endauth

@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>planify</title>
 
     <!-- Fonts -->
@@ -88,62 +87,76 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav> 
+   <!-- Sidebar Menu -->
+   <section>
+    <div
+        id="sidebar"
+        class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
+    >
+        <!-- Logo -->
+        <div class="flex flex-col items-center">
+            <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+        </div>
+
+        <!-- Sidebar Menu -->
+        <ul class="flex flex-col items-center pt-28 space-y-6">
+            <li class="relative group">
+                <a
+                    href="{{ route('dashboard') }}"
+                    class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                >
+                    <i class="bi bi-house-door-fill text-xl"></i>
+                </a>
+                <!-- Tooltip -->
+                <div
+                    class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                >
+                    Dashboard
+                </div>
+            </li>
+            <li class="relative group">
+                <a
+                    href="{{ route('task.index') }}"
+                    class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                >
+                    <i class="bi bi-list-check text-xl"></i>
+                </a>
+                <!-- Tooltip -->
+                <div
+                    class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                >
+                    Tasks
+                </div>
+            </li>
+            <li class="relative group">
+                <a
+                    href="{{ route('team.index') }}"
+                    class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                >
+                    <i class="bi bi-people-fill text-xl"></i>
+                </a>
+                <!-- Tooltip -->
+                <div
+                    class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                >
+                    Team
+                </div>
+            </li>
+            <li class="relative group">
+                <a
+                    href="#"
+                    class="flex flex-col items-center text-black transition mt-60"
+                >
+                    <i class="bi bi-box-arrow-right text-2xl"></i>
+                </a>
+           
+            </li>
+        </ul>
+    </div>
+</section>
 
    
-<!-- Sidebar -->
-
-<section>
-    <div
-    id="sidebar"
-    class="fixed top-0 left-0 h-full w-20 bg-white  shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
->
-    <!-- Logo -->
-    <div class="flex flex-col items-center">
-        <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
-    </div>
-
-    <!-- Sidebar Menu -->
-    <ul class="flex flex-col items-center pt-28 space-y-6">
-        <li>
-            <a
-                href="{{ route('dashboard') }}"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
-            >
-            <i class="bi bi-house-door-fill text-xl"></i>           
-            </a>
-        </li>
-        <li>
-            <a
-                href="{{ route('task.index') }}"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
-            >
-                <i class="bi bi-list-check text-xl"></i>
-              
-            </a>
-        </li>
-        <li>
-            <a
-                href="#"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
-            >
-            <i class="bi bi-people-fill text-xl"></i>              
-            </a>
-        </li>
-
-        <li>
-            <a
-            href="#"
-            class="flex flex-col items-center text-[#0e332d] transition mt-60 "
-        >
-        <i class="bi bi-box-arrow-right text-2xl"></i>
-        
-        </a>
-        </li>
-    </ul>
-
-</div>
- </section>   
 
 <!-- Main Content -->
 <div class="relative h-[27vh] w-[94.6vw] bg-black ml-[5.4vw]">
@@ -158,7 +171,7 @@
 
 
   <div class="">
-    <button onclick="document.getElementById('createTaskModal').classList.remove('hidden');" class="ms-40 mt-5 text-[#932a09] border-2 border-[#932a09] px-4  py-2 font-bold rounded-full">Create Task</button>
+    <button onclick="document.getElementById('createTaskModal').classList.remove('hidden');" class="ms-40 mt-5 text-[#10375c] border border-[#10375c] px-4  py-2  rounded-full">Create Task</button>
   </div>
 
   <div id="createTaskModal" class="fixed inset-0 bg-gray-500 bg-opacity-30 flex items-center justify-center z-50 hidden transition-opacity duration-300">
@@ -275,10 +288,10 @@
                 @if($personalTasks->count() > 0)
                     @php
                         $colors = [
-                            'bg-[#00573c]',
-                            'bg-[#c4bbb1]',
-                            'bg-[#d28f07]',
-                            'bg-[#033a69]',
+                            'bg-[#e5d9e5]',
+                            'bg-[#b5c7d3]',
+                            'bg-[#FFD09B]',
+                            'bg-[#D0E8C5]',
                             'bg-[#927e6d]',
                             'bg-[#829791]',
 

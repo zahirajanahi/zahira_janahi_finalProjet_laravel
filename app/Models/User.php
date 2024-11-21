@@ -46,7 +46,31 @@ class User extends Authenticatable
         ];
     }
 
-    public function tasks() {
+    public function ownedTeams()
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function tasks()
+    {
         return $this->hasMany(Task::class);
     }
+
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+   
+    public function teamCount()
+    {
+        return $this->teams()->count();;
+    }
+   
 }

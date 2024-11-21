@@ -13,6 +13,8 @@ class TeamController extends Controller
     public function index()
     {
         //
+        $teams = Team::all();
+        return view('team.index', compact('teams'));
     }
 
     /**
@@ -29,6 +31,19 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+        $team = Team::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'owner_id' => auth()->id(),
+        ]);
+
+        dd($request);
+
+
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class , 'index'])->name('home');
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
    Route::get('/calendar/create', [CalendarController::class, 'create'])->name('calendar.create');
    Route::put('/calendar/update/{id}', [CalendarController::class, 'update'])->name('calendar.update');
    Route::delete('/calendar/delete/{id}', [CalendarController::class, 'destroy'])->name('calendar.delete');
+   //Team
+   Route::get('/teams', [TeamController::class, 'index'])->name('team.index');
+   Route::post('/teams', [TeamController::class, 'store'])->name('team.store');
+
+
 });
 
 require __DIR__.'/auth.php';

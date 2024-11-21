@@ -121,59 +121,87 @@
         </div>
     </div>
 </nav>
-<!-- Sidebar -->
-
- <section>
+<section>
     <div
-    id="sidebar"
-    class="fixed top-0 left-0 h-full w-20 bg-white  shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
->
-    <!-- Logo -->
-    <div class="flex flex-col items-center">
-        <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
-    </div>
+        id="sidebar"
+        class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
+    >
+        <!-- Logo -->
+        <div class="flex flex-col items-center">
+            <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+        </div>
 
-    <!-- Sidebar Menu -->
-    <ul class="flex flex-col items-center pt-28 space-y-6">
-        <li>
-            <a
-                href="{{ route('dashboard') }}"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
+        <!-- Sidebar Menu -->
+        <section>
+            <div
+                id="sidebar"
+                class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
             >
-            <i class="bi bi-house-door-fill text-xl"></i>           
-            </a>
-        </li>
-        <li>
-            <a
-                href="{{ route('task.index') }}"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
-            >
-                <i class="bi bi-list-check text-xl"></i>
-              
-            </a>
-        </li>
-        <li>
-            <a
-                href="#"
-                class="flex flex-col items-center text-[#003324] bg-gray-100 px-3 rounded-full py-2 transition"
-            >
-            <i class="bi bi-people-fill text-xl"></i>              
-            </a>
-        </li>
-
-        <li>
-            <a
-            href="#"
-            class="flex flex-col items-center text-[#0e332d] transition mt-60 "
-        >
-        <i class="bi bi-box-arrow-right text-2xl"></i>
+                <!-- Logo -->
+                <div class="flex flex-col items-center">
+                    <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+                </div>
         
-        </a>
-        </li>
-    </ul>
+                <!-- Sidebar Menu -->
+                <ul class="flex flex-col items-center pt-28 space-y-6">
+                    <li class="relative group">
+                        <a
+                            href="{{ route('dashboard') }}"
+                            class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                        >
+                            <i class="bi bi-house-door-fill text-xl"></i>
+                        </a>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                        >
+                            Dashboard
+                        </div>
+                    </li>
+                    <li class="relative group">
+                        <a
+                            href="{{ route('task.index') }}"
+                            class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                        >
+                            <i class="bi bi-list-check text-xl"></i>
+                        </a>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                        >
+                            Tasks
+                        </div>
+                    </li>
+                    <li class="relative group">
+                        <a
+                            href="{{ route('team.index') }}"
+                            class="flex flex-col items-center text-[#6b0c02] bg-gray-100 px-3 rounded-full py-2 transition"
+                        >
+                            <i class="bi bi-people-fill text-xl"></i>
+                        </a>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition"
+                        >
+                            Team
+                        </div>
+                    </li>
+                    <li class="relative group">
+                        <a
+                            href="#"
+                            class="flex flex-col items-center text-black transition mt-60"
+                        >
+                            <i class="bi bi-box-arrow-right text-2xl"></i>
+                        </a>
+                   
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+    </div>
+</section>
 
-</div>
- </section>   
 
 
 

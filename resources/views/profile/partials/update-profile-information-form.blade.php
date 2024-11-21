@@ -48,7 +48,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button class="text-white bg-black rounded-full px-5 py-2">{{ __('Save') }}</x-primary-button>
+            <x-primary-button class="text-white bg-[#780f0f] rounded-full px-5 py-2">{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
