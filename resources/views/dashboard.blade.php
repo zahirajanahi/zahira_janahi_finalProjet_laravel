@@ -79,7 +79,17 @@
                 id="dropdownButton"
                 onclick="toggleDropdown()"
             >
-                <span>{{ Auth::user()->name }}</span>
+                <span class="me-3">{{ Auth::user()->name }}</span>
+
+                @if ($user->image)
+                <a href={{ route('profile.edit') }}>
+                    <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover cursor-pointer ms-3">
+                </a>
+                @else
+                <a href={{ route('profile.edit') }}>
+                    <i class="fas fa-user-circle text-[#2e2e2e] text-4xl"></i>
+                </a>
+                @endif
                 <svg
                     class="ml-2 w-4 h-4"
                     fill="currentColor"

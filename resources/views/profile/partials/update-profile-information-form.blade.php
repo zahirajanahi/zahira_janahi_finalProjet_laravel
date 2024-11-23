@@ -13,10 +13,40 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
+        <div>
+            <div>
+                {{-- <x-input-label for="image" :value="__('Upload profile picture')" class="pb-3" /> --}}
+                <div class="relative">
+                    <x-text-input 
+                        id="image" 
+                        name="image" 
+                        type="file" 
+                        class="hidden" 
+                        :value="old('image', $user->image)" 
+                        autocomplete="image" 
+                    />
 
+                    <button type="button" onclick="document.getElementById('image').click()" class="px-4 py-2 bg-[#2e2e2e] text-white rounded-full flex items-center space-x-2">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Choose Profile Picture</span>
+                    </button>
+                </div>
+                <x-input-error class="mt-2" :messages="$errors->get('image')" />
+            </div>
+﻿
+            <div class="pb-3">
+                @if($user->image)
+                <div class="mt-3">
+                    <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Picture" class="w-40 h-40 rounded-full object-cover">
+                </div>
+                @else
+                    <p class="mt-2 text-sm text-gray-400">No profile picture uploaded.</p>
+                @endif
+            </div>
+        </div>
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full rounded-lg" :value="old('name', $user->name)" required autofocus autocomplete="name" />

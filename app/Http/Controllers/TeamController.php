@@ -13,7 +13,8 @@ class TeamController extends Controller
     public function index()
     {
         //
-        $teams = Team::all();
+        $user=auth()->user();
+        $teams = Team::where("owner_id" , $user->id)->get();
         return view('team.index', compact('teams'));
     }
 
@@ -35,13 +36,19 @@ class TeamController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+
+        $user= auth()->user();
+
+
         $team = Team::create([
             'name' => $request->name,
             'description' => $request->description,
-            'owner_id' => auth()->id(),
+            'owner_id' => $user->id,
         ]);
 
-        dd($request);
+        $team->users()->attach($user , ["role" => "owner"]);
+
+        return back();
 
 
     }

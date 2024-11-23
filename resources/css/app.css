@@ -6,6 +6,10 @@
     scroll-behavior:smooth ;
 }
 
+.team{
+    overflow-x: hidden;
+}
+
    
                 .fc-button {
                     background-color: #932a09 !important;
@@ -45,4 +49,32 @@
 
 
 
-
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+    height: 1vh; /* Height for horizontal scrollbar */
+  }
+  
+  /* Scrollbar Track */
+  ::-webkit-scrollbar-track {
+    background: #f4f4f4; /* Background of the track */
+    border-radius: 6px; /* Rounded corners */
+  }
+  
+  /* Scrollbar Thumb */
+  ::-webkit-scrollbar-thumb {
+    background: #6b0c02; /* Color of the thumb */
+    border-radius: 6px; /* Rounded corners */
+    border: 3px solid #f4f4f4; /* Space around thumb */
+  }
+  
+  /* Scrollbar Thumb on Hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b0c02; /* Darker color when hovering */
+  }
+  
+  /* Optional: Scrollbar Corner (for both axes) */
+  ::-webkit-scrollbar-corner {
+    background: #f4f4f4; /* Corner background */
+  }
+  

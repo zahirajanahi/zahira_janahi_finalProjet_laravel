@@ -72,5 +72,8 @@ class User extends Authenticatable
     {
         return $this->teams()->count();;
     }
-   
+    public function isSubscribed()
+    {
+        return $this->is_subscribed;
+    }
 }

@@ -305,7 +305,7 @@
                             <div class="{{ $colors[$index % count($colors)] }} text-black relative shadow-sm h-[40vh] w-[18vw] rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow">
                                 <div class="flex justify-between items-center">
                                     <h3 class="font-bold text-black">{{ $task->name }}</h3>
-                                    <p class="text-sm mb-2  mt-2">
+                                    <p class="text-sm mb-2  mt-2 p-2">
                                         <span class="px-2 py-1 rounded-full 
                                             {{ $task->priority === 'high' ? ' text-red-700 border border-red-700 rounded-lg ' : 
                                                ($task->priority === 'medium' ? ' text-yellow-700 border border-yellow-700 rounded-lg' : ' text-green-700 border border-green-600 rounded-lg') }}
