@@ -54,7 +54,7 @@ class InvitationController extends Controller
     {
         $invitation = Invitation::findOrFail($id);
 
-        if (!$invitation->isPending()) {
+        if ($invitation->status !== 'Pending') {
             return response()->json(['message' => 'This invitation is no longer valid.'], 400);
         }
 
@@ -63,11 +63,11 @@ class InvitationController extends Controller
             ['name' => explode('@', $invitation->email)[0]]
         );
 
-        if ($invitation->team->members()->where('user_id', $user->id)->exists()) {
+        if ($invitation->team->users()->where('user_id', $user->id)->exists()) {
             return response()->json(['message' => 'You are already a member of this team.'], 400);
         }
 
-        $invitation->team->members()->attach($user->id, ['role' => 'member']);
+        $invitation->team->users()->attach($user->id, ['role' => 'member']);
         $invitation->update(['status' => 'accepted']);
 
         return response()->json(['message' => 'You have successfully joined the team.']);
