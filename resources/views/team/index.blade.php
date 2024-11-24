@@ -13,12 +13,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-white team">
+    {{-- flesh messages --}}
+    <div class="z-50">
+        {{-- script for the flash messages --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const flashMessage = document.getElementById('flashMessage');
+
+                if (flashMessage) {
+                    setTimeout(() => {
+                        flashMessage.style.right = '20px';
+                    }, 100);
+
+                    setTimeout(() => {
+                        flashMessage.style.right = '-300px';
+                    }, 3000);
+
+                    setTimeout(() => {
+                        flashMessage.remove();
+                    }, 3500);
+                }
+            });
+        </script>
+
+
+        @if (session('success'))
+            <div id="flashMessage"
+                class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-[#6dc489] text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="flashMessage"
+                class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-red-500 text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('info'))
+            <div id="flashMessage"
+                class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-[#6737f5] text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('info') }}
+            </div>
+        @endif
+
+    </div>
+
     <nav class="p-4 border-b pb-4">
         <div class="flex justify-between items-center">
             <!-- Create Button with Dropdown -->
@@ -164,7 +214,7 @@
                     <label for="name" class="block text-gray-600 text-sm font-medium mb-1">Team Name</label>
                     <input id="name" type="text" name="name"
                         class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                        placeholder="Enter task name" required />
+                        placeholder="Enter team name" required />
                 </div>
 
                 <!-- Task description -->
@@ -173,7 +223,7 @@
                         Description</label>
                     <textarea name="description" id="description" rows="2"
                         class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                        placeholder="Enter task description"></textarea>
+                        placeholder="Enter team description"></textarea>
                 </div>
 
 
@@ -194,39 +244,122 @@
         </div>
     </div>
 
-
+    {{-- DISPLAY ALL TEAM --}}
     <div class="flex flex-wrap gap-3 ms-40">
         @foreach ($teams as $team)
             <div class="w-[30vw] mt-10 bg-gray-100 p-6 rounded-3xl h-[30vh] cursor-pointer relative"
-                onclick="showSidebar('{{ $team->name }}', '{{ $team->description }}')">
+                onclick="showSidebar('{{ $team->id }}', '{{ $team->name }}', '{{ $team->description }}')">
                 <div class="justify-between flex">
                     <h1 class="text-black font-bold text-xl">{{ $team->name }}</h1>
-                   
-                    <button onclick="event.stopPropagation(); document.getElementById('invite{{ $team->id }}').classList.remove('hidden');"><i
-                        class="bi bi-person-plus text-lg font-bold  me-5 text-[#6b0c02] "></i></button>
-              
+                    <div class="flex gap-2">
+                        <button
+                            onclick="event.stopPropagation(); document.getElementById('createTask{{ $team->id }}').classList.remove('hidden');">
+                            <i class="bi bi-plus-circle text-lg font-bold text-[#6b0c02]"></i>
+                        </button>
+                        <button
+                            onclick="event.stopPropagation(); document.getElementById('invite{{ $team->id }}').classList.remove('hidden');">
+                            <i class="bi bi-person-plus text-lg font-bold text-[#6b0c02]"></i>
+                        </button>
+                    </div>
                 </div>
                 <p class="text-gray-500 pt-4">{{ $team->description }}</p>
 
-                <!-- Container for images positioned at the bottom -->
-                <div class="flex items-center absolute bottom-3 left-5 right-0 ">
-                    <!-- First image -->
-                    <div class="rounded-full p-2 z-30">
-                        <img src="{{ asset('storage/images/user-4.png') }}" alt="Person 1"
-                            class="rounded-full w-7 h-7 object-cover" />
-                    </div>
-                    <!-- Second image -->
-                    <div class="-ml-6 rounded-full  p-2 z-20">
-                        <img src="{{ asset('storage/images/user-8.png') }}" alt="Person 2"
-                            class="rounded-full w-7 h-7 object-cover" />
-                    </div>
-                    <!-- Third image -->
-                    <div class="-ml-6 rounded-full  p-2 z-10">
-                        <img src="{{ asset('storage/images/user-6.png') }}" alt="Person 3"
-                            class="rounded-full w-7 h-7 object-cover" />
-                    </div> <a href="" class="text-sm text-gray-500 pb-1 ps-1">+ more</a>
+                {{-- Team members display --}}
+                <div class="flex items-center absolute bottom-3 left-5 right-0">
+                    @foreach ($team->users as $index => $user)
+                        @if ($index < 3)
+                            <div class="{{ $index > 0 ? '-ml-6' : '' }} rounded-full p-2 z-{{ 30 - $index * 10 }}">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-[#932a09] text-white flex items-center justify-center">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                    @if ($team->users->count() > 3)
+                        <span class="text-sm text-gray-500 pb-1 ps-1">+{{ $team->users->count() - 3 }} more</span>
+                    @endif
                 </div>
             </div>
+
+            {{-- Create Task Modal --}}
+            <div id="createTask{{ $team->id }}"
+                class="fixed inset-0 bg-gray-500 bg-opacity-30 flex items-center justify-center z-50 hidden transition-opacity duration-300">
+                <div class="bg-white border border-gray-300 rounded-2xl shadow-lg w-full max-w-md p-6">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800">Create Task</h2>
+                        <button class="text-gray-400 hover:text-gray-600 text-2xl focus:outline-none"
+                            onclick="document.getElementById('createTask{{ $team->id }}').classList.add('hidden');">&times;</button>
+                    </div>
+
+                    <form action="{{ route('tasks.store') }}" method="POST" class="mt-4">
+                        @csrf
+                        <input type="hidden" name="team_id" value="{{ $team->id }}">
+
+                        <div class="mb-4">
+                            <label class="block text-gray-600 text-sm font-medium mb-1">Task Name</label>
+                            <input type="text" name="name" required
+                                class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-600 text-sm font-medium mb-1">Description</label>
+                            <textarea name="description" rows="2"
+                                class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-gray-600 text-sm font-medium mb-1">Start Date</label>
+                                <input type="date" name="start" required
+                                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm font-medium mb-1">End Date</label>
+                                <input type="date" name="end" required
+                                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-600 text-sm font-medium mb-1">Priority</label>
+                            <select name="priority" required
+                                class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        @if (auth()->id() === $team->owner_id)
+                            <div class="mb-4">
+                                <label class="block text-gray-600 text-sm font-medium mb-1">Assign To</label>
+                                <select name="assigned_to"
+                                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md">
+                                    <option value="">Select team member</option>
+                                    @foreach ($team->users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
+                        <div class="flex justify-end gap-3">
+                            <button type="button"
+                                class="px-4 py-2 text-sm font-medium rounded-full text-gray-700 bg-gray-200 border border-gray-300"
+                                onclick="document.getElementById('createTask{{ $team->id }}').classList.add('hidden');">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                class="px-4 py-2 text-sm font-medium text-white bg-[#932a09] rounded-full">
+                                Create Task
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
             {{-- invite modal --}}
             <div id="invite{{ $team->id }}"
                 class="fixed inset-0 bg-gray-500 bg-opacity-30 flex items-center justify-center z-50 hidden transition-opacity duration-300">
@@ -243,7 +376,7 @@
                     </div>
 
                     <!-- Modal form -->
-                    <form action="{{ route("invite.store" , $team->id) }}" method="POST" class="mt-4">
+                    <form action="{{ route('invite.store', $team->id) }}" method="POST" class="mt-4">
                         @csrf
 
                         <!-- Task name -->
@@ -273,22 +406,26 @@
                     </form>
                 </div>
             </div>
-            
         @endforeach
     </div>
 
-    <!-- Team show more -->
+    <!-- Team Sidebar with Tasks -->
     <div id="team-sidebar"
-        class="fixed top-0 right-0 w-[50vw] h-full bg-gray-100 shadow-2xl p-6 z-50 mt-20 transform translate-x-full transition-transform duration-500 rounded-3xl">
-        <button class="text-[#6b0c02] float-right" onclick="hideSidebar()">x</button>
-        <div class="flex justify-between items-center">
-            <h2 id="sidebar-title" class="text-xl font-bold"></h2>
-           
-        </div>
-        <h2 id="sidebar-title" class="text-xl font-bold"></h2>
-        <p id="sidebar-description" class="mt-4 text-gray-600"></p>
-    </div>
+        class="fixed top-0 right-0 w-[50vw] h-full bg-gray-100 shadow-2xl p-6 z-50 mt-20 transform translate-x-full transition-transform duration-500 rounded-3xl overflow-y-auto">
+        <button class="text-[#6b0c02] float-right text-xl font-bold" onclick="hideSidebar()">×</button>
+        <div class="space-y-6">
+            <div>
+                <h2 id="sidebar-title" class="text-2xl font-bold text-gray-900"></h2>
+                <p id="sidebar-description" class="mt-2 text-gray-600"></p>
+            </div>
 
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold mb-4">Team Tasks</h3>
+                <div id="team-tasks" class="space-y-4">
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -353,7 +490,52 @@
             document.getElementById('sidebar-title').textContent = name;
             document.getElementById('sidebar-description').textContent = description;
         }
+        async function showSidebar(teamId, name, description) {
+        const sidebar = document.getElementById('team-sidebar');
+        sidebar.classList.remove('translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        
+        document.getElementById('sidebar-title').textContent = name;
+        document.getElementById('sidebar-description').textContent = description;
+        
+        // Load team tasks
+        const tasksContainer = document.getElementById('team-tasks');
+        tasksContainer.innerHTML = 'Loading tasks...';
+        
+        try {
+            const response = await fetch(`/teams/${teamId}/tasks`);
+            const tasks = await response.json();
+            
+            tasksContainer.innerHTML = tasks.length ? tasks.map(task => `
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">${task.name}</h4>
+                            <p class="text-sm text-gray-600">${task.description || 'No description'}</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-full ${getPriorityClass(task.priority)}">
+                            ${task.priority}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-500">
+                        <p>Due: ${new Date(task.end).toLocaleDateString()}</p>
+                        ${task.assigned_to ? `<p>Assigned to: ${task.assigned_user.name}</p>` : ''}
+                    </div>
+                </div>
+            `).join('') : '<p class="text-gray-500">No tasks yet</p>';
+        } catch (error) {
+            tasksContainer.innerHTML = '<p class="text-red-500">Error loading tasks</p>';
+        }
+    }
 
+    function getPriorityClass(priority) {
+        const classes = {
+            low: 'bg-green-100 text-green-800',
+            medium: 'bg-yellow-100 text-yellow-800',
+            high: 'bg-red-100 text-red-800'
+        };
+        return classes[priority] || classes.low;
+    }
         // Function to hide the sidebar
         function hideSidebar() {
             const sidebar = document.getElementById('team-sidebar');

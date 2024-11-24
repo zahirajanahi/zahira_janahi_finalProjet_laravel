@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
@@ -31,10 +32,15 @@ Route::middleware('auth')->group(function () {
    Route::post('/teams/invitation/{teamId}', [InvitationController::class, 'store'])->name('invite.store');
    Route::get('/invitations/{id}/accept', [InvitationController::class, 'accept'])->name('invitations.accept');
    Route::get('/invitations/{id}/reject', [InvitationController::class, 'reject'])->name('invitations.reject');
-   //dashboard
-//    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+   Route::get('/subscription/payment', [SubscriptionController::class, 'show'])->name('subscription.show');
+    Route::post('/subscription/create-checkout-session', [SubscriptionController::class, 'createCheckoutSession'])->name('subscription.checkout');
+    Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('subscription.success');
   
+    Route::get('/subscription/payment', [SubscriptionController::class, 'show'])->name('subscription.show');
+    Route::post('/subscription/create-checkout-session', [SubscriptionController::class, 'createCheckoutSession'])->name('subscription.checkout');
+    Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('subscription.success');
+
+    Route::get('/teams/{team}/tasks', [TeamController::class, 'getTasks'])->name('team.tasks');
 });
 
 require __DIR__.'/auth.php';

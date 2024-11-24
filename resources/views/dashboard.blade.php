@@ -131,6 +131,7 @@
         </div>
     </div>
 </nav>
+
 <section>
     <div
         id="sidebar"

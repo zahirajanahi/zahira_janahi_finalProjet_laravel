@@ -6,34 +6,19 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-
 class TaskController extends Controller
 {
     use AuthorizesRequests;
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $personalTasks = auth()->user()->tasks;
-        return view('task.index'  ,compact('personalTasks'));
+        // Only fetch personal tasks (where team_id is null)
+        $personalTasks = auth()->user()->tasks()->whereNull('team_id')->get();
+        return view('task.index', compact('personalTasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, Task $task )
-    {
-        //
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -44,10 +29,7 @@ class TaskController extends Controller
             'assigned_to' => 'nullable|exists:users,id',
         ]);
 
-
-
-
-        Task::create([
+        $task = Task::create([
             'name' => $request->name,
             'description' => $request->description,
             'start' => $request->start,
@@ -56,63 +38,50 @@ class TaskController extends Controller
             'user_id' => auth()->id(),
             'team_id' => $request->team_id,
             'assigned_to' => $request->assigned_to,
+            'status' => 'pending'
         ]);
 
+        // Redirect based on whether it's a team task or personal task
+        if ($request->team_id) {
+            return redirect()->route('team.index')->with('success', 'Team task created successfully!');
+        }
 
-    
-
-
-        return redirect()->route('task.index', $task);
+        return redirect()->route('task.index')->with('success', 'Personal task created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
+    public function edit(Task $task)
     {
-        //
+        return view('tasks.index', [
+            'personalTasks' => Task::whereNull('team_id')->get(),
+            'task' => $task
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-  
-    /**
-     * Update the specified resource in storage.
-     */
-    
- public function edit(Task $task)
-{
-    return view('tasks.index', [
-        'personalTasks' => Task::all(), // Or your logic to fetch tasks
-        'task' => $task
-    ]);
-}
+    public function update(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'priority' => 'required|in:low,medium,high',
+            'deadline' => 'required|date',
+        ]);
 
-public function update(Request $request, Task $task)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'priority' => 'required|in:low,medium,high',
-        'deadline' => 'required|date',
-    ]);
+        $task->update($validated);
 
-    $task->update($validated);
+        return redirect()->route('task.index')->with('success', 'Task updated successfully!');
+    }
 
-    return redirect()->route('tasks.personal.index')->with('success', 'Task updated successfully!');
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);
-
+        
+        $isTeamTask = $task->team_id !== null;
         $task->delete();
 
-      return back();
+        if ($isTeamTask) {
+            return redirect()->route('team.index')->with('success', 'Team task deleted successfully!');
+        }
+        
+        return redirect()->route('task.index')->with('success', 'Task deleted successfully!');
     }
 }

@@ -4,41 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        $user=auth()->user();
-        $teams = Team::where("owner_id" , $user->id)->get();
+        $user = auth()->user();
+        $teams = Team::where("owner_id", $user->id)->get();
         return view('team.index', compact('teams'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $user= auth()->user();
+        $user = auth()->user();
+        $teamCount = $user->ownedTeams()->count();
 
+        if ($teamCount >= 5 && !$user->isSubscribed()) {
+            session([
+                'pending_team' => [
+                    'name' => $request->name,
+                    'description' => $request->description
+                ]
+            ]);
+            
+            return redirect()->route('subscription.show');
+        }
 
         $team = Team::create([
             'name' => $request->name,
@@ -46,42 +43,49 @@ class TeamController extends Controller
             'owner_id' => $user->id,
         ]);
 
-        $team->users()->attach($user , ["role" => "owner"]);
+        $team->users()->attach($user, ["role" => "owner"]);
 
-        return back();
-
-
+        return back()->with('success', 'Team created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function getTasks(Team $team)
+    {
+        // Ensure the user is a member of the team
+        if (!$team->users()->where('user_id', auth()->id())->exists()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $tasks = $team->tasks()
+            ->with('assignedUser')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($task) {
+                return [
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'description' => $task->description,
+                    'priority' => $task->priority,
+                    'start' => $task->start,
+                    'end' => $task->end,
+                    'status' => $task->status,
+                    'assigned_to' => $task->assigned_to,
+                    'assigned_user' => $task->assignedUser ? [
+                        'id' => $task->assignedUser->id,
+                        'name' => $task->assignedUser->name
+                    ] : null
+                ];
+            });
+
+        return response()->json($tasks);
+    }
+
     public function show(Team $team)
     {
-        //
-    }
+        // Ensure the user is a member of the team
+        if (!$team->users()->where('user_id', auth()->id())->exists()) {
+            return redirect()->route('team.index')->with('error', 'You are not a member of this team.');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Team $team)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Team $team)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Team $team)
-    {
-        //
+        return view('team.show', compact('team'));
     }
 }

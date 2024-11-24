@@ -16,6 +16,53 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white">
+    {{-- flesh messages --}}
+    <div>
+        {{-- script for the flash messages --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const flashMessage = document.getElementById('flashMessage');
+
+                if (flashMessage) {
+                    setTimeout(() => {
+                        flashMessage.style.right = '20px';
+                    }, 100); 
+
+                    setTimeout(() => {
+                        flashMessage.style.right = '-300px';
+                    }, 3000); 
+
+                    setTimeout(() => {
+                        flashMessage.remove();
+                    }, 3500);
+                }
+            });
+        </script>
+
+
+        @if(session('success'))
+            <div  id="flashMessage" class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-[#6dc489] text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div  id="flashMessage" class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-red-500 text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div  id="flashMessage" class="fixed flex items-center gap-2 right-[-300px] top-5 flash-message bg-[#6737f5] text-white px-4 py-4 rounded-md mb-4 shadow-lg transition-all duration-300">
+                <i class="fa-solid fa-thumbs-up text-[15px]"></i>
+                {{ session('info') }}
+            </div>
+        @endif
+
+    </div>
+
     <nav class="p-4 border-b pb-4">
         <div class="flex justify-between items-center">
             <!-- Create Button with Dropdown -->
