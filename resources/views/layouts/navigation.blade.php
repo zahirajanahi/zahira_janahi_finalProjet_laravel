@@ -1,12 +1,9 @@
 <nav x-data="{ open: false }" class="p-4">    
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-3">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-3 pt-2">
         <!-- Left Section: Links -->
-        <div class="flex items-center gap-6 text-black ps-5 font-bold hidden md:flex">
+        <div class="flex items-center gap-6 text-black ps-5 font-bold ">
             @guest
-                <a href="#" class="hover:text-gray-800">About Us</a>
-                <a href="#" class="hover:text-gray-800">Products</a>
-                <a href="#" class="hover:text-gray-800">Services</a>
-                <a href="#" class="hover:text-gray-800">Features</a>
+               <img src="{{ asset('storage/images/logo.png') }}" class="w-32" alt="">
             @endguest
         </div>
 
@@ -45,7 +42,7 @@
     @else
         <!-- Show login and signup for guests -->
         <a href="{{ route('login') }}" class="text-black hover:text-gray-800">Log In</a>
-        <a href="{{ route('register') }}" class="text-white bg-[#70220e] rounded-full px-4 py-2 hover:bg-[#843420] transition duration-500 me-5">
+        <a href="{{ route('register') }}" class="text-white bg-[#70220e] rounded-full px-4 py-2 hover:bg-[#843420] transition duration-500 ">
             Sign Up
         </a>
     @endauth

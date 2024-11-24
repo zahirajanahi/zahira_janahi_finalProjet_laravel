@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -12,9 +13,9 @@ class TaskController extends Controller
 
     public function index()
     {
-        // Only fetch personal tasks (where team_id is null)
+        $user = Auth::user();
         $personalTasks = auth()->user()->tasks()->whereNull('team_id')->get();
-        return view('task.index', compact('personalTasks'));
+        return view('task.index', compact('personalTasks', 'user'));
     }
 
     public function store(Request $request)
@@ -23,7 +24,7 @@ class TaskController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'required|date|after:start',
             'priority' => 'required|in:low,medium,high',
             'team_id' => 'nullable|exists:teams,id',
             'assigned_to' => 'nullable|exists:users,id',
@@ -41,7 +42,6 @@ class TaskController extends Controller
             'status' => 'pending'
         ]);
 
-        // Redirect based on whether it's a team task or personal task
         if ($request->team_id) {
             return redirect()->route('team.index')->with('success', 'Team task created successfully!');
         }
@@ -49,21 +49,14 @@ class TaskController extends Controller
         return redirect()->route('task.index')->with('success', 'Personal task created successfully!');
     }
 
-    public function edit(Task $task)
-    {
-        return view('tasks.index', [
-            'personalTasks' => Task::whereNull('team_id')->get(),
-            'task' => $task
-        ]);
-    }
-
     public function update(Request $request, Task $task)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
             'priority' => 'required|in:low,medium,high',
-            'deadline' => 'required|date',
         ]);
 
         $task->update($validated);

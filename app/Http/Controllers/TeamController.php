@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
 class TeamController extends Controller
 {
     public function index()
-    {
+    { 
+        $users = Auth::user();
         $user = auth()->user();
         $teams = Team::where("owner_id", $user->id)->get();
-        return view('team.index', compact('teams'));
+        return view('team.index', compact('teams','users'));
     }
 
     public function store(Request $request)

@@ -1,7 +1,7 @@
 <x-app-layout>
     
     <div>
-        <img src="{{ asset('storage/images/home.jpeg') }}" class="mx-auto w-[90vw] mt-6 rounded-3xl" alt="">
+        <img src="{{ asset('storage/images/home.jpeg') }}" class="mx-auto w-[90vw] mt-2 rounded-3xl" alt="">
     </div>
 
     <div class="pt-7 ps-32 pb-10">
@@ -16,16 +16,11 @@
                       <span class="text-white text-3xl font-serif font-bold">Daily</span>
                     </div>
                   </div>
-                  <div class="ms-7 pt-2 text-gray-900 flex flex-col gap-2">
+                  <div class="ms-7 pt-3 text-gray-900 flex flex-col gap-2">
                     <div>                    
                      <i class="bi bi-calendar"></i> <span>Planner</span>
                     </div>
-                    <div>                    
-                        <i class="bi bi-check-circle-fill"></i> <span>Habits</span>
-                     </div>
-                     <div>                    
-                        <i class="bi bi-book-half"></i> <span>Journal</span>
-                    </div>
+                 
 
                   </div>
             </div>
@@ -37,15 +32,7 @@
                     <span class="text-white text-3xl font-serif font-bold">Planners</span>
                     </div>
                 </div>
-                <div class="ms-7 pt-2 text-gray-800 flex flex-col gap-2">
-                    <div>                    
-                        <i class="bi bi-border-style"></i>
-                        <span> Meal Planner</span>
-                    </div>
-                    <div>                    
-                        <i class="bi bi-pin-map"></i>
-                        <span>Travel Planner</span>
-                     </div>
+                <div class="ms-7 pt-3 text-gray-800 flex flex-col gap-2">
                      <div>                    
                         <i class="bi bi-calendar"></i> <span>Workout Planner</span>
                     </div>
@@ -60,18 +47,11 @@
                         <span class="text-white text-3xl font-serif font-bold">Personal</span>
                     </div>
                  </div>
-                 <div class="ms-7 pt-2 text-gray-800 flex flex-col gap-2">
+                 <div class="ms-7 pt-3 text-gray-800 flex flex-col gap-2">
                     <div>                    
                         <i class="bi bi-book"></i>
                         <span>Books</span>
                     </div>
-                    <div>                    
-                        <i class="bi bi-cash-stack"></i> <span>Finance</span>
-                     </div>
-                     <div>                    
-                        <i class="bi bi-film"></i> <span>Movies & Series</span>
-                    </div>
-
                   </div>
             </div>
             
@@ -82,17 +62,10 @@
                   <span class="text-white text-3xl font-serif font-bold">Goals</span>
                 </div>
               </div>
-              <div class="ms-7 pt-2 text-gray-800 flex flex-col gap-2">
-                <div>                    
-                    <i class="bi bi-alt"></i> <span>Goals</span>
-                </div>
+              <div class="ms-7 pt-3 text-gray-800 flex flex-col gap-2">
                 <div>                    
                     <i class="bi bi-diagram-3"></i> <span>Vision</span>
                  </div>
-                 <div>                    
-                    <i class="bi bi-calendar"></i> <span>Health</span>
-                </div>
-
               </div>
            </div>
              

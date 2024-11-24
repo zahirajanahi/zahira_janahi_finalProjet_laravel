@@ -11,8 +11,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <div class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg p-8">
+    <div class="flex flex-col items-center justify-center p-4">
+        <div class="bg-white w-full p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Choose Your Plan</h1>
                 <p class="text-gray-600">Upgrade to unlock additional features or continue with the free plan.</p>
@@ -20,7 +20,7 @@
 
             <div class="flex gap-6 ms-48">
                 <!-- Free Plan -->
-                <div class="bg-gray-50 rounded-xl w-[30vw] h-[65vh] p-6 border border-gray-200">
+                <div class="bg-gray-50 rounded-xl w-[30vw] h-[70vh] p-6 border border-gray-200">
                     <div class="text-center mb-4">
                         <h2 class="text-xl font-semibold text-gray-900">Free Plan</h2>
                         <p class="text-2xl font-bold text-gray-900">Free</p>
@@ -30,7 +30,7 @@
                             <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Create up to 3 teams
+                            Create up to 5 teams
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

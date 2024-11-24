@@ -18,7 +18,6 @@
         @method('patch')
         <div>
             <div>
-                {{-- <x-input-label for="image" :value="__('Upload profile picture')" class="pb-3" /> --}}
                 <div class="relative">
                     <x-text-input 
                         id="image" 
@@ -28,14 +27,19 @@
                         :value="old('image', $user->image)" 
                         autocomplete="image" 
                     />
-
-                    <button type="button" onclick="document.getElementById('image').click()" class="px-4 py-2 bg-[#2e2e2e] text-white rounded-full flex items-center space-x-2">
-                        <i class="fas fa-user-circle"></i>
+            
+                    <button 
+                        type="button" 
+                        onclick="document.getElementById('image').click()" 
+                        class="flex items-center px-6 py-3 bg-gray-100 text-gray-800 border border-gray-300 rounded-2xl shadow-sm hover:bg-gray-200 transition-colors duration-300"
+                    >
+                        <i class="fas fa-user-circle text-gray-500 text-2xl mr-2"></i>
                         <span>Choose Profile Picture</span>
                     </button>
                 </div>
-                <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                <x-input-error class="mt-2 text-gray-600" :messages="$errors->get('image')" />
             </div>
+            
 ﻿
             <div class="pb-3">
                 @if($user->image)

@@ -18,7 +18,7 @@
         <div class="min-h-screen flex">
             <!-- Left Panel with Background Image -->
             <div class="hidden lg:block lg:w-[60vw] relative">
-               <img src="{{ asset('storage/images/home2.jpeg') }}" class="h-[100vh] w-[80vw] object-cover rounde-3xl" alt="">
+               <img src="{{ asset('storage/images/register2.png') }}" class="h-[100vh] w-[80vw] object-cover rounde-3xl" alt="">
             </div>
 
             <!-- Right Panel -->

@@ -73,39 +73,101 @@
         <div class="flex justify-between items-center">
             <!-- Create Button with Dropdown -->
             <div class="relative ps-20 flex items-center gap-4">
-                <button class=" text-gray-600 text-xl" id="toggleSidebarButton" onclick="toggleSidebar()">
-                    <i class="bi bi-list"></i>
-                </button>
-
-
-
+                <button
+                class=" text-gray-600 text-xl"
+                id="toggleSidebarButton"
+                onclick="toggleSidebar()"
+            >
+                <i class="bi bi-list"></i> 
+            </button>
+    
+    
+            <div class="relative ps-20 flex items-center gap-4">
+              
+                <div
+                    id="createDropdown"
+                    class="hidden absolute rihgt-10 mt-40 w-40   text-gray-800 border border-gray-200 bg-white rounded-md shadow-lg z-10"
+                >
+                    <div class="pt-3">
+                        <a 
+                            href="{{ route('task.index') }}" 
+                            class="font-bold flex items-center gap-2 text-gray-400 px-4 py-2 hover:bg-gray-200 rounded-md"
+                        >
+                            <i class="bi bi-list-task"></i> Task
+                        </a>
+                    </div>
+                    <div class="pb-3">
+                        <a 
+                            href="#" 
+                            class="font-bold flex items-center gap-2 text-gray-400 px-4 py-2 hover:bg-gray-200 rounded-md"
+                        >
+                            <i class="bi bi-people"></i> Team
+                        </a>
+                    </div>
+                </div>
             </div>
-
+            
+            </div>
+    
             <!-- Search Bar -->
-            <input type="text" placeholder="Search"
-                class="w-[40vw] px-4 py-2 rounded-full bg-gray-100 border-none text-black focus:border-gray-100 focus:outline-none focus:ring-0" />
-
+            <input
+                type="text"
+                placeholder="Search"
+                class="w-[40vw] px-4 py-2 rounded-full bg-gray-100 border-none text-black focus:border-gray-100 focus:outline-none focus:ring-0"
+            />
+    
             <!-- User Dropdown -->
             <div class="relative pe-20">
-                <button class="flex items-center text-sm font-medium text-[#270906] focus:outline-none"
-                    id="dropdownButton" onclick="toggleDropdown()">
-                    <span>{{ Auth::user()->name }}</span>
-                    <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
+                <button
+                    class="flex items-center text-sm font-medium text-[#270906] focus:outline-none"
+                    id="dropdownButton"
+                    onclick="toggleDropdown()"
+                >
+                    <span class="me-3">{{ Auth::user()->name }}</span>
+    
+                    @if ($users->image)
+                    <a href={{ route('profile.edit') }}>
+                        <img src="{{ asset('storage/' . $users->image) }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover cursor-pointer ms-3">
+                    </a>
+                    @else
+                    <a href={{ route('profile.edit') }}>
+                        <i class="fas fa-user-circle text-[#2e2e2e] text-4xl"></i>
+                    </a>
+                    @endif
+                    <svg
+                        class="ml-2 w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
+                            clip-rule="evenodd"
+                        />
                     </svg>
                 </button>
-
+    
                 <!-- Dropdown Content -->
-                <div id="dropdownContent"
-                    class="hidden absolute right-0 mt-2 w-48 text-gray-800 border border-gray-200 bg-white rounded-md shadow-lg z-10 pb-3 pt-3">
-                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm">
+                <div
+                    id="dropdownContent"
+                    class="hidden absolute right-0 mt-2 w-48 text-gray-800 border border-gray-200 bg-white rounded-md shadow-lg z-10 pb-3 pt-3"
+                >
+                    <a
+                        href="{{ route('profile.edit') }}"
+                        class="block px-4 py-2 text-sm"
+                    >
                         Profile
                     </a>
-                    <form method="POST" action="{{ route('logout') }}" class="block">
+                    <form
+                        method="POST"
+                        action="{{ route('logout') }}"
+                        class="block"
+                    >
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm">
+                        <button
+                            type="submit"
+                            class="w-full text-left px-4 py-2 text-sm"
+                        >
                             Log Out
                         </button>
                     </form>
@@ -121,7 +183,7 @@
             class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300">
             <!-- Logo -->
             <div class="flex flex-col items-center">
-                <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+                <img src="{{ asset('storage/images/logo2.png') }}" class="w-12 mb-4" alt="logo">
             </div>
 
             <!-- Sidebar Menu -->

@@ -137,10 +137,7 @@
         id="sidebar"
         class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg flex flex-col items-center py-6 space-y-6 transition-all duration-300"
     >
-        <!-- Logo -->
-        <div class="flex flex-col items-center">
-            <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
-        </div>
+  
 
         <!-- Sidebar Menu -->
         <section>
@@ -150,7 +147,7 @@
             >
                 <!-- Logo -->
                 <div class="flex flex-col items-center">
-                    <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+                    <img src="{{ asset('storage/images/logo2.png') }}" class="w-10 mb-4" alt="logo">
                 </div>
         
                 <!-- Sidebar Menu -->

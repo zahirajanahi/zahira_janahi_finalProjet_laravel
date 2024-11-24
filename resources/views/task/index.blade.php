@@ -76,7 +76,31 @@
             </button>
     
     
-           
+            <div class="relative ps-20 flex items-center gap-4">
+      
+                <div
+                    id="createDropdown"
+                    class="hidden absolute rihgt-10 mt-40 w-40   text-gray-800 border border-gray-200 bg-white rounded-md shadow-lg z-10"
+                >
+                    <div class="pt-3">
+                        <a 
+                            href="{{ route('task.index') }}" 
+                            class="font-bold flex items-center gap-2 text-gray-400 px-4 py-2 hover:bg-gray-200 rounded-md"
+                        >
+                            <i class="bi bi-list-task"></i> Task
+                        </a>
+                    </div>
+                    <div class="pb-3">
+                        <a 
+                            href="#" 
+                            class="font-bold flex items-center gap-2 text-gray-400 px-4 py-2 hover:bg-gray-200 rounded-md"
+                        >
+                            <i class="bi bi-people"></i> Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
             </div>
     
             <!-- Search Bar -->
@@ -93,7 +117,17 @@
                     id="dropdownButton"
                     onclick="toggleDropdown()"
                 >
-                    <span>{{ Auth::user()->name }}</span>
+                    <span class="me-3">{{ Auth::user()->name }}</span>
+    
+                    @if ($user->image)
+                    <a href={{ route('profile.edit') }}>
+                        <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover cursor-pointer ms-3">
+                    </a>
+                    @else
+                    <a href={{ route('profile.edit') }}>
+                        <i class="fas fa-user-circle text-[#2e2e2e] text-4xl"></i>
+                    </a>
+                    @endif
                     <svg
                         class="ml-2 w-4 h-4"
                         fill="currentColor"
@@ -134,7 +168,7 @@
                 </div>
             </div>
         </div>
-    </nav> 
+    </nav>
    <!-- Sidebar Menu -->
    <section>
     <div
@@ -143,7 +177,7 @@
     >
         <!-- Logo -->
         <div class="flex flex-col items-center">
-            <img src="{{ asset('storage/images/logo.png') }}" class="w-12 mb-4" alt="logo">
+            <img src="{{ asset('storage/images/logo2.png') }}" class="w-12 mb-4" alt="logo">
         </div>
 
         <!-- Sidebar Menu -->
@@ -201,7 +235,7 @@
             </li>
         </ul>
     </div>
-</section>
+ </section>
 
    
 
@@ -321,7 +355,7 @@
             </div>
         </form>
     </div>
-</div>
+ </div>
 
 
 
@@ -412,71 +446,82 @@
 </div>
 
 
-{{-- <!-- Edit Modal -->
-<div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-[#1c1c1c] border-[1px] border-[#444] rounded-2xl shadow-md shadow-black/50 w-full max-w-md p-6">
-
+<!-- Edit Modal -->
+<div id="editModal-{{ $task->id }}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white border border-gray-300 rounded-2xl shadow-lg w-full max-w-md p-6">
         <!-- Modal header -->
-        <div class="flex justify-between items-center pb-4">
-            <h2 class="text-lg font-medium text-gray-200">Create a Task</h2>
+        <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800">Edit Task</h2>
             <button
-                class="text-[#ffd997] hover:text-[#fff] text-[25px] focus:outline-none cursor-pointer transition duration-300"
-                onclick="document.getElementById('editModal').classList.add('hidden');"
+                class="text-gray-400 hover:text-gray-600 text-2xl focus:outline-none cursor-pointer transition duration-200"
+                onclick="document.getElementById('editModal-{{ $task->id }}').classList.add('hidden');"
             >
                 &times;
             </button>
         </div>
 
-       
-            <!-- Modal form -->
-        <form action="{{ route('task.update') }}" method="POST" class="mt-4">
+        <!-- Modal form -->
+        <form action="{{ route('task.update', $task) }}" method="POST" class="mt-4">
             @csrf
             @method('PUT')
 
             <!-- Task name -->
             <div class="mb-4">
-                <label for="name" class="block text-gray-300 text-sm font-medium mb-1">Task Name</label>
+                <label for="name-{{ $task->id }}" class="block text-gray-600 text-sm font-medium mb-1">Task Name</label>
                 <input
                     type="text"
                     name="name"
-                    id="name"
+                    id="name-{{ $task->id }}"
                     value="{{ old('name', $task->name) }}"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                     required
                 />
             </div>
 
             <!-- Task description -->
             <div class="mb-4">
-                <label for="description" class="block text-gray-300 text-sm font-medium mb-1">Task Description</label>
+                <label for="description-{{ $task->id }}" class="block text-gray-600 text-sm font-medium mb-1">Task Description</label>
                 <textarea
                     name="description"
-                    id="description"
+                    id="description-{{ $task->id }}"
                     rows="3"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 >{{ old('description', $task->description) }}</textarea>
             </div>
 
-            <!-- Task deadline -->
+            <!-- Start date -->
             <div class="mb-4">
-                <label for="deadline" class="block text-gray-300 text-sm font-medium mb-1">Task Deadline</label>
+                <label for="start-{{ $task->id }}" class="block text-gray-600 text-sm font-medium mb-1">Start Date & Time</label>
                 <input
-                    id="deadline"
-                    type="date"
-                    name="deadline"
-                    value="{{ old('deadline', $task->deadline ) }}"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    type="datetime-local"
+                    name="start"
+                    id="start-{{ $task->id }}"
+                    value="{{ old('start', date('Y-m-d\TH:i', strtotime($task->start))) }}"
+                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                    required
+                />
+            </div>
+
+            <!-- End date -->
+            <div class="mb-4">
+                <label for="end-{{ $task->id }}" class="block text-gray-600 text-sm font-medium mb-1">End Date & Time</label>
+                <input
+                    type="datetime-local"
+                    name="end"
+                    id="end-{{ $task->id }}"
+                    value="{{ old('end', date('Y-m-d\TH:i', strtotime($task->end))) }}"
+                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                     required
                 />
             </div>
 
             <!-- Task Priority -->
             <div class="mb-4">
-                <label for="priority" class="block text-gray-300 text-sm font-medium mb-1">Task Priority</label>
+                <label for="priority-{{ $task->id }}" class="block text-gray-600 text-sm font-medium mb-1">Task Priority</label>
                 <select
-                    id="priority"
                     name="priority"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
+                    id="priority-{{ $task->id }}"
+                    class="block w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                     required
                 >
                     <option value="low" {{ old('priority', $task->priority) === 'low' ? 'selected' : '' }}>Low</option>
@@ -485,58 +530,25 @@
                 </select>
             </div>
 
-            <!-- Assigned To -->
-            @if($task->team)
-            <div class="mb-4">
-                <label for="assigned_to" class="block text-gray-300 text-sm font-medium mb-1">Assign To</label>
-                <select
-                    id="assigned_to"
-                    name="assigned_to"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
-                >
-                    <option value="">Select Team Member</option>
-                    @foreach($task->team->users as $user)
-                    <option value="{{ $user->id }}" {{ old('assigned_to', $task->assigned_to) == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            @endif
-
-            <!-- Status -->
-            <div class="mb-4">
-                <label for="status" class="block text-gray-300 text-sm font-medium mb-1">Status</label>
-                <select
-                    id="status"
-                    name="status"
-                    class="block w-full px-4 py-2 text-sm text-gray-100 bg-[#2a2a2a] border border-[#555] rounded-md focus:ring-[#6737f5] focus:border-[#6737f5] transition duration-300"
-                >
-                    <option value="pending" {{ old('status', $task->status) === 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="in_progress" {{ old('status', $task->status) === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                    <option value="completed" {{ old('status', $task->status) === 'completed' ? 'selected' : '' }}>Completed</option>
-                </select>
-            </div>
-
             <!-- Submit and cancel buttons -->
             <div class="flex justify-end gap-3">
-                <a href="{{ route('task.index') }}" class="px-4 py-2 text-sm font-medium text-gray-300 bg-transparent border border-[#444] rounded-md hover:bg-[#444] transition duration-300">
+                <button
+                    type="button"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded-full hover:bg-gray-300 transition duration-200"
+                    onclick="document.getElementById('editModal-{{ $task->id }}').classList.add('hidden');"
+                >
                     Cancel
-                </a>
+                </button>
                 <button
                     type="submit"
-                    class="px-4 py-2 text-sm font-medium text-white bg-[#ffd997] border border-[#ffd997] rounded-md transition duration-300"
+                    class="px-4 py-2 text-sm font-medium text-white bg-[#932a09] border rounded-full transition duration-200"
                 >
                     Update
                 </button>
             </div>
         </form>
- </div>
-
-
-
-
-</div> --}}
+    </div>
+</div>
 
 
 
