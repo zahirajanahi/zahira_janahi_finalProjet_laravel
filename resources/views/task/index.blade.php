@@ -385,7 +385,18 @@
                             <!-- Task Card -->
                             <div class="{{ $colors[$index % count($colors)] }} text-black relative shadow-sm h-[40vh] w-[18vw] rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow">
                                 <div class="flex justify-between items-center">
+                                  <div class="flex gap-2 items-center">
+                                    <input type="checkbox" 
+                                    class="form-checkbox h-5 w-5 text-[#932a09] rounded border-gray-300 focus:ring-[#932a09]"
+                                    {{ $task->status === 'completed' ? 'checked' : '' }}
+                                    onchange="toggleTaskStatus({{ $task->id }}, this)"
+                                   >
+                             
+                    
                                     <h3 class="font-bold text-black">{{ $task->name }}</h3>
+                                  </div>
+                                   
+                                
                                     <p class="text-sm mb-2  mt-2 p-2">
                                         <span class="px-2 py-1 rounded-full 
                                             {{ $task->priority === 'high' ? ' text-red-700 border border-red-700 rounded-lg ' : 
@@ -401,6 +412,8 @@
                                         {{ $task->description }}
                                     </p>
                                 @endif
+
+                                
 
                                 <div class="flex justify-between items-center absolute top-60">
                                     <p class="text-sm text-black mt-2">
@@ -446,7 +459,7 @@
 </div>
 
 
-<!-- Edit Modal -->
+{{-- <!-- Edit Modal -->
 <div id="editModal-{{ $task->id }}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white border border-gray-300 rounded-2xl shadow-lg w-full max-w-md p-6">
         <!-- Modal header -->
@@ -548,7 +561,7 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
 
 
 
@@ -605,7 +618,39 @@
         const dropdown = document.getElementById(`dropdown-${taskId}`);
         dropdown.classList.toggle('hidden');
     }
-
+   
+    async function toggleTaskStatus(taskId, checkbox) {
+    try {
+        const response = await fetch(`/tasks/${taskId}/toggle-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const taskCard = checkbox.closest('.rounded-xl');
+            const taskName = taskCard.querySelector('h3');
+            const statusText = checkbox.nextElementSibling;
+            
+            if (data.status === 'completed') {
+                taskName.classList.add('line-through', 'text-gray-500');
+                statusText.classList.add('line-through', 'text-gray-500');
+                statusText.classList.remove('text-black');
+            } else {
+                taskName.classList.remove('line-through', 'text-gray-500');
+                statusText.classList.remove('line-through', 'text-gray-500');
+                statusText.classList.add('text-black');
+            }
+        }
+    } catch (error) {
+        console.error('Error toggling task status:', error);
+        checkbox.checked = !checkbox.checked; // Revert checkbox state
+    }
+}
 </script>
 </body>
 </html>

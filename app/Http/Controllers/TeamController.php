@@ -90,4 +90,19 @@ class TeamController extends Controller
 
         return view('team.show', compact('team'));
     }
+    
+    public function destroy(Team $team)
+{
+    // Check if the authenticated user is the owner of the team
+    if (auth()->id() !== $team->owner_id) {
+        return redirect()->route('team.index')->with('error', 'You do not have permission to delete this team.');
+    }
+
+    // Delete the team
+    $team->delete();
+
+    return redirect()->route('team.index')->with('success', 'Team deleted successfully!');
+}
+
+
 }

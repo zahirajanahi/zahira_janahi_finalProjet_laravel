@@ -20,7 +20,7 @@
         <div class="flex justify-between items-center">
 
               <div class="flex items-center ps-20">
-                <img src="{{ asset('storage/images/logo.png') }}" class="w-[3vw]" alt="logo"><span><a href="{{ route('dashboard') }}">lanify</a></span>
+                <img src="{{ asset('storage/images/logo.png') }}" class="w-[3vw]" alt="logo">
 
               </div>
             <!-- User Dropdown -->

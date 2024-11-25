@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Mail;
 
 class InvitationController extends Controller
 {
+
+
+    
     public function store(Request $request ,Team $teamId)
     {
         //
@@ -63,26 +66,31 @@ class InvitationController extends Controller
             ['name' => explode('@', $invitation->email)[0]]
         );
 
-        if ($invitation->team->users()->where('user_id', $user->id)->exists()) {
-            return response()->json(['message' => 'You are already a member of this team.'], 400);
-        }
+        $team = Team::where('id' , $invitation->team->id)->first();
+        $team->users()->attach($user, ['role' => 'member']);
 
-        $invitation->team->users()->attach($user->id, ['role' => 'member']);
-        $invitation->update(['status' => 'accepted']);
+        // if ($invitation->team->users()->where('user_id', $user->id)->exists()) {
+        //     return response()->json(['message' => 'You are already a member of this team.'], 400);
+        // }
+
+        // $invitation->team->users()->attach($user->id, ['role' => 'member']);
+        $invitation->update(['status' => 'Accepted']);
 
         return response()->json(['message' => 'You have successfully joined the team.']);
     }
 
     public function reject($id)
     {
-        $invitation = Invitation::findOrFail($id);
+        $invitation = Invitation::where('id', $id)->first();
 
-        if (!$invitation->isPending()) {
+        // Check if the invitation is still pending
+        if ($invitation->status !== 'Pending') {
             return response()->json(['message' => 'This invitation is no longer valid.'], 400);
         }
 
-        $invitation->update(['status' => 'rejected']);
+        // Update the invitation status
+        $invitation->update(['status' => 'Rejected']);
 
-        return response()->json(['message' => 'Invitation rejected successfully.']);
+        return response()->json(['message' => 'You have rejected the invitation.']);
     }
 }

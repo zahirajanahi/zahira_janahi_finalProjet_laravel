@@ -325,9 +325,12 @@
                     </div>
                 </div>
                 <p class="text-gray-500 pt-4">{{ $team->description }}</p>
+                  
+                <div>
 
+                </div>
                 {{-- Team members display --}}
-                <div class="flex items-center absolute bottom-3 left-5 right-0">
+                <div class="flex items-center absolute  bottom-3 left-5 right-0">
                     @foreach ($team->users as $index => $user)
                         @if ($index < 3)
                             <div class="{{ $index > 0 ? '-ml-6' : '' }} rounded-full p-2 z-{{ 30 - $index * 10 }}">
@@ -341,6 +344,14 @@
                     @if ($team->users->count() > 3)
                         <span class="text-sm text-gray-500 pb-1 ps-1">+{{ $team->users->count() - 3 }} more</span>
                     @endif
+                    <form action="{{ route('team.destroy', $team) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this team?');">
+                        @csrf
+                        @method('DELETE')
+    
+                        @if ($team->owner_id === auth()->id())
+                            <button type="submit" class="btn btn-danger ms-72 text-gray-500">remove</button>
+                        @endif
+                    </form>
                 </div>
             </div>
 
@@ -474,7 +485,11 @@
     <!-- Team Sidebar with Tasks -->
     <div id="team-sidebar"
         class="fixed top-0 right-0 w-[50vw] h-full bg-gray-100 shadow-2xl p-6 z-50 mt-20 transform translate-x-full transition-transform duration-500 rounded-3xl overflow-y-auto">
-        <button class="text-[#6b0c02] float-right text-xl font-bold" onclick="hideSidebar()">×</button>
+        <div class="flex gap-3 float-end items-end">
+            <a href="/chatify"><i class="bi bi-chat cursor-pointer"></i></a>
+            <button class="text-[#6b0c02] float-right text-xl font-bold" onclick="hideSidebar()">×</button>
+           
+        </div>
         <div class="space-y-6">
             <div>
                 <h2 id="sidebar-title" class="text-2xl font-bold text-gray-900"></h2>
@@ -544,60 +559,91 @@
             dropdown.classList.toggle('hidden');
         }
 
-        // Function to show the sidebar with team details
-        function showSidebar(name, description) {
-            const sidebar = document.getElementById('team-sidebar');
-            sidebar.classList.remove('translate-x-full');
-            sidebar.classList.add('translate-x-0');
-            document.getElementById('sidebar-title').textContent = name;
-            document.getElementById('sidebar-description').textContent = description;
-        }
         async function showSidebar(teamId, name, description) {
-        const sidebar = document.getElementById('team-sidebar');
-        sidebar.classList.remove('translate-x-full');
-        sidebar.classList.add('translate-x-0');
+    const sidebar = document.getElementById('team-sidebar');
+    sidebar.classList.remove('translate-x-full');
+    sidebar.classList.add('translate-x-0');
+    
+    document.getElementById('sidebar-title').textContent = name;
+    document.getElementById('sidebar-description').textContent = description;
+    
+    const tasksContainer = document.getElementById('team-tasks');
+    tasksContainer.innerHTML = 'Loading tasks...';
+    
+    try {
+        const response = await fetch(`/teams/${teamId}/tasks`);
+        const tasks = await response.json();
         
-        document.getElementById('sidebar-title').textContent = name;
-        document.getElementById('sidebar-description').textContent = description;
-        
-        // Load team tasks
-        const tasksContainer = document.getElementById('team-tasks');
-        tasksContainer.innerHTML = 'Loading tasks...';
-        
-        try {
-            const response = await fetch(`/teams/${teamId}/tasks`);
-            const tasks = await response.json();
-            
-            tasksContainer.innerHTML = tasks.length ? tasks.map(task => `
-                <div class="bg-white rounded-lg p-4 shadow">
-                    <div class="flex justify-between items-start">
+        tasksContainer.innerHTML = tasks.length ? tasks.map(task => `
+            <div class="bg-white rounded-lg p-4 shadow">
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" 
+                            class="form-checkbox h-5 w-5 text-[#932a09] rounded border-gray-300 focus:ring-[#932a09]"
+                            ${task.status === 'completed' ? 'checked' : ''}
+                            onchange="toggleTaskStatus(${task.id}, this)"
+                        >
                         <div>
-                            <h4 class="font-semibold text-gray-900">${task.name}</h4>
+                            <h4 class="font-semibold text-gray-900 ${task.status === 'completed' ? 'line-through text-gray-500' : ''}">${task.name}</h4>
                             <p class="text-sm text-gray-600">${task.description || 'No description'}</p>
                         </div>
-                        <span class="px-2 py-1 text-xs rounded-full ${getPriorityClass(task.priority)}">
-                            ${task.priority}
-                        </span>
                     </div>
-                    <div class="mt-2 text-sm text-gray-500">
-                        <p>Due: ${new Date(task.end).toLocaleDateString()}</p>
-                        ${task.assigned_to ? `<p>Assigned to: ${task.assigned_user.name}</p>` : ''}
-                    </div>
+                    <span class="px-2 py-1 text-xs rounded-full ${getPriorityClass(task.priority)}">
+                        ${task.priority}
+                    </span>
                 </div>
-            `).join('') : '<p class="text-gray-500">No tasks yet</p>';
-        } catch (error) {
-            tasksContainer.innerHTML = '<p class="text-red-500">Error loading tasks</p>';
-        }
+                <div class="mt-2 text-sm text-gray-500">
+                    <p>Due: ${new Date(task.end).toLocaleDateString()}</p>
+                    ${task.assigned_to ? `<p>Assigned to: ${task.assigned_user.name}</p>` : ''}
+                    <p>Status: <span class="font-medium ${task.status === 'completed' ? 'text-green-600' : 'text-yellow-600'}">${task.status}</span></p>
+                </div>
+            </div>
+        `).join('') : '<p class="text-gray-500">No tasks yet</p>';
+    } catch (error) {
+        tasksContainer.innerHTML = '<p class="text-red-500">Error loading tasks</p>';
     }
+}
 
-    function getPriorityClass(priority) {
-        const classes = {
-            low: 'bg-green-100 text-green-800',
-            medium: 'bg-yellow-100 text-yellow-800',
-            high: 'bg-red-100 text-red-800'
-        };
-        return classes[priority] || classes.low;
+async function toggleTaskStatus(taskId, checkbox) {
+    try {
+        const response = await fetch(`/tasks/${taskId}/toggle-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const taskElement = checkbox.closest('.bg-white');
+            const taskTitle = taskElement.querySelector('h4');
+            
+            if (data.status === 'completed') {
+                taskTitle.classList.add('line-through', 'text-gray-500');
+            } else {
+                taskTitle.classList.remove('line-through', 'text-gray-500');
+            }
+            
+            const statusSpan = taskElement.querySelector('span.font-medium');
+            statusSpan.textContent = data.status;
+            statusSpan.className = `font-medium ${data.status === 'completed' ? 'text-green-600' : 'text-yellow-600'}`;
+        }
+    } catch (error) {
+        console.error('Error toggling task status:', error);
+        checkbox.checked = !checkbox.checked; // Revert checkbox state
     }
+}
+
+function getPriorityClass(priority) {
+    const classes = {
+        low: 'bg-green-100 text-green-800',
+        medium: 'bg-yellow-100 text-yellow-800',
+        high: 'bg-red-100 text-red-800'
+    };
+    return classes[priority] || classes.low;
+}
         // Function to hide the sidebar
         function hideSidebar() {
             const sidebar = document.getElementById('team-sidebar');

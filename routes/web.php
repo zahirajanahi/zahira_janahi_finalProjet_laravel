@@ -39,8 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/subscription/payment', [SubscriptionController::class, 'show'])->name('subscription.show');
     Route::post('/subscription/create-checkout-session', [SubscriptionController::class, 'createCheckoutSession'])->name('subscription.checkout');
     Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('subscription.success');
-
+    Route::post('/task/{task}/complete', [TaskController::class, 'markAsCompleted'])->name('task.complete');
     Route::get('/teams/{team}/tasks', [TeamController::class, 'getTasks'])->name('team.tasks');
+    Route::post('/tasks/{task}/toggle-status', [TaskController::class, 'toggleStatus'])->name('tasks.toggle-status');
+
+    Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('team.destroy');
+
 });
 
 require __DIR__.'/auth.php';

@@ -51,17 +51,27 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start' => 'required|date',
-            'end' => 'required|date|after:start',
-            'priority' => 'required|in:low,medium,high',
-        ]);
+        if ($request->has('status')) {
+            $validated = $request->validate([
+                'status' => 'required|in:completed,pending'
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'start' => 'required|date',
+                'end' => 'required|date|after:start',
+                'priority' => 'required|in:low,medium,high',
+            ]);
+        }
 
         $task->update($validated);
 
-        return redirect()->route('task.index')->with('success', 'Task updated successfully!');
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Task updated successfully!');
     }
 
     public function destroy(Task $task)
@@ -77,4 +87,17 @@ class TaskController extends Controller
         
         return redirect()->route('task.index')->with('success', 'Task deleted successfully!');
     }
+
+    public function toggleStatus(Task $task)
+    {
+        $newStatus = $task->status === 'completed' ? 'pending' : 'completed';
+        $task->update(['status' => $newStatus]);
+        
+        return response()->json([
+            'success' => true,
+            'status' => $newStatus
+        ]);
+    }
+
+
 }
