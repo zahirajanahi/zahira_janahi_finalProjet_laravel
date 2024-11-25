@@ -351,7 +351,7 @@
                         @method('DELETE')
     
                         @if ($team->owner_id === auth()->id())
-                            <button type="submit" class="btn btn-danger ms-64 text-gray-500">remove</button>
+                            <button type="submit" class="btn btn-danger ms-80 text-gray-500">remove</button>
                         @endif
                     </form>
                 </div>
