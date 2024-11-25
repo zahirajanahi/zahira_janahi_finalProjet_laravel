@@ -61,10 +61,7 @@ class InvitationController extends Controller
             return response()->json(['message' => 'This invitation is no longer valid.'], 400);
         }
 
-        $user = Auth::user() ?? User::firstOrCreate(
-            ['email' => $invitation->email],
-            ['name' => explode('@', $invitation->email)[0]]
-        );
+        $user = User::firstOrCreate(['email' => $invitation->email]);
 
         $team = Team::where('id' , $invitation->team->id)->first();
         $team->users()->attach($user, ['role' => 'member']);

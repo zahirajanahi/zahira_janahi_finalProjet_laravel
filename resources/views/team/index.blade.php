@@ -330,14 +330,16 @@
 
                 </div>
                 {{-- Team members display --}}
-                <div class="flex items-center absolute  bottom-3 left-5 right-0">
+                <div class="flex items-center absolute  bottom-3 left-12 right-0">
                     @foreach ($team->users as $index => $user)
-                        @if ($index < 3)
+                        @if ($user->pivot->role =='member')
                             <div class="{{ $index > 0 ? '-ml-6' : '' }} rounded-full p-2 z-{{ 30 - $index * 10 }}">
                                 <div
                                     class="w-7 h-7 rounded-full bg-[#932a09] text-white flex items-center justify-center">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    
                                 </div>
+                        
                             </div>
                         @endif
                     @endforeach
@@ -349,7 +351,7 @@
                         @method('DELETE')
     
                         @if ($team->owner_id === auth()->id())
-                            <button type="submit" class="btn btn-danger ms-72 text-gray-500">remove</button>
+                            <button type="submit" class="btn btn-danger ms-64 text-gray-500">remove</button>
                         @endif
                     </form>
                 </div>
