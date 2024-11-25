@@ -14,9 +14,18 @@ class TeamController extends Controller
     { 
         $users = Auth::user();
         $user = auth()->user();
-        $teams = Team::where("owner_id", $user->id)->get();
-        return view('team.index', compact('teams','users'));
+        
+        // Get teams where user is owner OR member
+        $teams = Team::where('owner_id', $user->id)
+            ->orWhereHas('users', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with(['users', 'tasks'])
+            ->get();
+            
+        return view('team.index', compact('teams', 'users'));
     }
+    
 
     public function store(Request $request)
     {

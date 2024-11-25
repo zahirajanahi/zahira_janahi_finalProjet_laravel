@@ -54,7 +54,7 @@
                 </div>
                 <div class="pb-3">
                     <a 
-                        href="#" 
+                        href="{{ route('team.index') }}" 
                         class="font-bold flex items-center gap-2 text-gray-400 px-4 py-2 hover:bg-gray-200 rounded-md"
                     >
                         <i class="bi bi-people"></i> Team
@@ -195,12 +195,19 @@
                         </div>
                     </li>
                     <li class="relative group">
-                        <a
-                            href="#"
+                        <form
+                        method="POST"
+                        action="{{ route('logout') }}"
+                        class="block"
+                    >
+                        @csrf
+                        <button
+                            type="submit"
                             class="flex flex-col items-center text-black transition mt-60"
                         >
-                            <i class="bi bi-box-arrow-right text-2xl"></i>
-                        </a>
+                        <i class="bi bi-box-arrow-right text-2xl"></i>
+                    </button>
+                    </form>
                    
                     </li>
                 </ul>

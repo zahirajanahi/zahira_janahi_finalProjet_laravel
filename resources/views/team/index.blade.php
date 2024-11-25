@@ -222,10 +222,20 @@
                     </div>
                 </li>
                 <li class="relative group">
-                    <a href="#" class="flex flex-col items-center text-black transition mt-60">
-                        <i class="bi bi-box-arrow-right text-2xl"></i>
-                    </a>
-
+                    <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="block"
+                >
+                    @csrf
+                    <button
+                        type="submit"
+                        class="flex flex-col items-center text-black transition mt-60"
+                    >
+                    <i class="bi bi-box-arrow-right text-2xl"></i>
+                </button>
+                </form>
+               
                 </li>
             </ul>
         </div>
@@ -318,43 +328,51 @@
                             onclick="event.stopPropagation(); document.getElementById('createTask{{ $team->id }}').classList.remove('hidden');">
                             <i class="bi bi-plus-circle text-lg font-bold text-[#6b0c02]"></i>
                         </button>
-                        <button
-                            onclick="event.stopPropagation(); document.getElementById('invite{{ $team->id }}').classList.remove('hidden');">
-                            <i class="bi bi-person-plus text-lg font-bold text-[#6b0c02]"></i>
-                        </button>
+                        @if($team->owner_id === auth()->id())
+                            <button
+                                onclick="event.stopPropagation(); document.getElementById('invite{{ $team->id }}').classList.remove('hidden');">
+                                <i class="bi bi-person-plus text-lg font-bold text-[#6b0c02]"></i>
+                            </button>
+                        @endif
                     </div>
                 </div>
+                
                 <p class="text-gray-500 pt-4">{{ $team->description }}</p>
                   
                 <div>
 
                 </div>
                 {{-- Team members display --}}
-                <div class="flex items-center absolute  bottom-3 left-12 right-0">
-                    @foreach ($team->users as $index => $user)
-                        @if ($user->pivot->role =='member')
-                            <div class="{{ $index > 0 ? '-ml-6' : '' }} rounded-full p-2 z-{{ 30 - $index * 10 }}">
-                                <div
-                                    class="w-7 h-7 rounded-full bg-[#932a09] text-white flex items-center justify-center">
-                                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                                    
+                
+                    <div class="flex items-center absolute  bottom-3 left-12 right-0">
+                        @foreach ($team->users as $index => $user)
+                            @if ($user->pivot->role =='member')
+                                <div class="{{ $index > 0 ? '-ml-6' : '' }} rounded-full p-2 z-{{ 30 - $index * 10 }}">
+                                    <div
+                                        class="w-7 h-7 rounded-full bg-[#932a09] text-white flex items-center justify-center">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        
+                                    </div>
+                            
                                 </div>
-                        
-                            </div>
+                            @endif
+                        @endforeach
+                        @if ($team->users->count() > 3)
+                            <span class="text-sm text-gray-500 pb-1 ps-1">+{{ $team->users->count() - 3 }} more</span>
                         @endif
-                    @endforeach
-                    @if ($team->users->count() > 3)
-                        <span class="text-sm text-gray-500 pb-1 ps-1">+{{ $team->users->count() - 3 }} more</span>
-                    @endif
-                    <form action="{{ route('team.destroy', $team) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this team?');">
-                        @csrf
-                        @method('DELETE')
-    
-                        @if ($team->owner_id === auth()->id())
-                            <button type="submit" class="btn btn-danger ms-80 text-gray-500">remove</button>
-                        @endif
-                    </form>
-                </div>
+                    </div>
+                
+                        <form action="{{ route('team.destroy', $team) }}" class="mt-20" method="POST" onsubmit="return confirm('Are you sure you want to delete this team?');">
+                            @csrf
+                            @method('DELETE')
+        
+                            @if ($team->owner_id === auth()->id())
+                                <button type="submit" class="btn btn-danger ms-80 text-gray-500">remove</button>
+                            @endif
+                        </form>
+              
+                
+                
             </div>
 
             {{-- Create Task Modal --}}
@@ -486,7 +504,7 @@
 
     <!-- Team Sidebar with Tasks -->
     <div id="team-sidebar"
-        class="fixed top-0 right-0 w-[50vw] h-full bg-gray-100 shadow-2xl p-6 z-50 mt-20 transform translate-x-full transition-transform duration-500 rounded-3xl overflow-y-auto">
+        class="fixed top-0 right-0 w-[50vw] h-full bg-gray-100 shadow-2xl p-6 z-50 mt-20 transform translate-x-full transition-transform duration-500 rounded-3xl overflow-y-auto mb-10">
         <div class="flex gap-3 float-end items-end">
             <a href="/chatify"><i class="bi bi-chat cursor-pointer"></i></a>
             <button class="text-[#6b0c02] float-right text-xl font-bold" onclick="hideSidebar()">×</button>
